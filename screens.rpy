@@ -409,10 +409,10 @@ screen load:
                     # Each file slot is an hbox containing two buttons.
                     hbox:
 
-                        for branch in range(branched_saves.get(base_page + i, 1)):
+                        for branch in range(persistent.branched_saves.get(base_page + i, 1)):
                             button:
 
-                                xminimum 424 / branched_saves.get(base_page + i, 1)
+                                xminimum 424 / persistent.branched_saves.get(base_page + i, 1)
                                 yminimum 77
                                 action FileAction(i if branch == 0 else "{}-{}".format(i, branch))
 
@@ -422,7 +422,7 @@ screen load:
                                 add FileScreenshot(i if branch == 0 else "{}-{}".format(i, branch))
 
                                 # Format the description, and add it as text.
-                                if branched_saves.get(base_page + i, 1) == 1:
+                                if persistent.branched_saves.get(base_page + i, 1) == 1:
                                     $ description = "% 2s. %s\n%s" % (
                                         FileSlotName(i, columns * rows),
                                         FileTime(i, empty=_("Empty Slot.")),
@@ -440,7 +440,7 @@ screen load:
                                 yminimum 38
                                 action FileDelete(i)
                                 text "X" # Or this could be an image or something.
-                            if branched_saves.get(base_page + i, 1) == 1:
+                            if persistent.branched_saves.get(base_page + i, 1) == 1:
                                 button:
                                     yminimum 38
                                     action SplitSave(base_page + i)
@@ -508,10 +508,10 @@ screen save:
                     # Each file slot is an hbox containing two buttons.
                     hbox:
 
-                        for branch in range(branched_saves.get(base_page + i, 1)):
+                        for branch in range(persistent.branched_saves.get(base_page + i, 1)):
                             button:
 
-                                xminimum 424 / branched_saves.get(base_page + i, 1)
+                                xminimum 424 / persistent.branched_saves.get(base_page + i, 1)
                                 yminimum 77
                                 action FileAction(i if branch == 0 else "{}-{}".format(i, branch))
 
@@ -521,7 +521,7 @@ screen save:
                                 add FileScreenshot(i if branch == 0 else "{}-{}".format(i, branch))
 
                                 # Format the description, and add it as text.
-                                if branched_saves.get(base_page + i, 1) == 1:
+                                if persistent.branched_saves.get(base_page + i, 1) == 1:
                                     $ description = "% 2s. %s\n%s" % (
                                         FileSlotName(i, columns * rows),
                                         FileTime(i, empty=_("Empty Slot.")),
@@ -561,7 +561,7 @@ init -2 python:
     style.large_button.idle_color = "#2E2E2E"
     style.large_button.hover_color = "#ccc"
 
-    store.branched_saves = {}
+    persistent.branched_saves = {}
 
 
 

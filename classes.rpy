@@ -3360,7 +3360,8 @@ init -2 python:
             self.index = index
 
         def __call__(self):
-            branched_saves[self.index] = branched_saves.get(self.index, 1) + 1
+            persistent.branched_saves[self.index] = persistent.branched_saves.get(self.index, 1) + 1
+            renpy.save_persistent()
             renpy.restart_interaction()
 
     class MergeSave(Action):
@@ -3369,5 +3370,6 @@ init -2 python:
             self.index = index
 
         def __call__(self):
-            branched_saves[self.index] = branched_saves.get(self.index, 2) - 1
+            persistent.branched_saves[self.index] = persistent.branched_saves.get(self.index, 2) - 1
+            renpy.save_persistent()
             renpy.restart_interaction()
