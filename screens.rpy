@@ -401,38 +401,55 @@ screen load:
                 xpos 753
                 ypos 251
 
+                $ base_page = rows * int(persistent._file_page)
+
                 # Display eight file slots, numbered 1 - 8.
                 for i in range(1, columns * rows + 1):
 
                     # Each file slot is an hbox containing two buttons.
                     hbox:
 
-                        button:
+                        for branch in range(branched_saves.get(base_page + i, 1)):
+                            button:
 
-                            xminimum 424
-                            yminimum 77
-                            action FileAction(i)
+                                xminimum 424 / branched_saves.get(base_page + i, 1)
+                                yminimum 77
+                                action FileAction(i if branch == 0 else "{}-{}".format(i, branch))
 
-                            has hbox
+                                has hbox
 
-                            # Add the screenshot.
-                            add FileScreenshot(i)
+                                # Add the screenshot.
+                                add FileScreenshot(i if branch == 0 else "{}-{}".format(i, branch))
 
-                            # Format the description, and add it as text.
-                            $ description = "% 2s. %s\n%s" % (
-                                FileSlotName(i, columns * rows),
-                                FileTime(i, empty=_("Empty Slot.")),
-                                FileSaveName(i))
+                                # Format the description, and add it as text.
+                                if branched_saves.get(base_page + i, 1) == 1:
+                                    $ description = "% 2s. %s\n%s" % (
+                                        FileSlotName(i, columns * rows),
+                                        FileTime(i, empty=_("Empty Slot.")),
+                                        FileSaveName(i))
+                                else:
+                                    $ description = "{}{}.".format(FileSlotName(i, columns * rows), "a" if branch == 0 else "b")
 
-                            text description
+                                text description
 
-                            key "save_delete" action FileDelete(i)
+                                key "save_delete" action FileDelete(i if branch == 0 else "{}-{}".format(i, branch))
 
-                        button:
+                        vbox:
+                            button:
 
-                            yminimum 77
-                            action FileDelete(i)
-                            text "X" # Or this could be an image or something.
+                                yminimum 38
+                                action FileDelete(i)
+                                text "X" # Or this could be an image or something.
+                            if branched_saves.get(base_page + i, 1) == 1:
+                                button:
+                                    yminimum 38
+                                    action SplitSave(base_page + i)
+                                    text ">"
+                            else:
+                                button:
+                                    yminimum 38
+                                    action [MergeSave(base_page + i), If(FileLoadable("{}-{}".format(i, branch)), FileDelete(i if branch == 0 else "{}-1".format(i)), NullAction())]
+                                    text "<"
 
 screen save:
 
@@ -483,38 +500,55 @@ screen save:
                 xpos 753
                 ypos 251
 
+                $ base_page = rows * int(persistent._file_page)
+
                 # Display eight file slots, numbered 1 - 8.
                 for i in range(1, columns * rows + 1):
 
                     # Each file slot is an hbox containing two buttons.
                     hbox:
 
-                        button:
+                        for branch in range(branched_saves.get(base_page + i, 1)):
+                            button:
 
-                            xminimum 424
-                            yminimum 77
-                            action FileAction(i)
+                                xminimum 424 / branched_saves.get(base_page + i, 1)
+                                yminimum 77
+                                action FileAction(i if branch == 0 else "{}-{}".format(i, branch))
 
-                            has hbox
+                                has hbox
 
-                            # Add the screenshot.
-                            add FileScreenshot(i)
+                                # Add the screenshot.
+                                add FileScreenshot(i if branch == 0 else "{}-{}".format(i, branch))
 
-                            # Format the description, and add it as text.
-                            $ description = "% 2s. %s\n%s" % (
-                                FileSlotName(i, columns * rows),
-                                FileTime(i, empty=_("Empty Slot.")),
-                                FileSaveName(i))
+                                # Format the description, and add it as text.
+                                if branched_saves.get(base_page + i, 1) == 1:
+                                    $ description = "% 2s. %s\n%s" % (
+                                        FileSlotName(i, columns * rows),
+                                        FileTime(i, empty=_("Empty Slot.")),
+                                        FileSaveName(i))
+                                else:
+                                    $ description = "{}{}.".format(FileSlotName(i, columns * rows), "a" if branch == 0 else "b")
 
-                            text description
+                                text description
 
-                            key "save_delete" action FileDelete(i)
+                                key "save_delete" action FileDelete(i if branch == 0 else "{}-{}".format(i, branch))
 
-                        button:
+                        vbox:
+                            button:
 
-                            yminimum 77
-                            action FileDelete(i)
-                            text "X" # Or this could be an image or something.
+                                yminimum 38
+                                action FileDelete(i)
+                                text "X" # Or this could be an image or something.
+                            if branched_saves.get(base_page + i, 1) == 1:
+                                button:
+                                    yminimum 38
+                                    action SplitSave(base_page + i)
+                                    text ">"
+                            else:
+                                button:
+                                    yminimum 38
+                                    action [MergeSave(base_page + i), If(FileLoadable("{}-{}".format(i, branch)), FileDelete(i if branch == 0 else "{}-1".format(i)), NullAction())]
+                                    text "<"
 
 init -2 python:
     style.file_picker_frame = Style(style.menu_frame)
@@ -526,6 +560,8 @@ init -2 python:
     style.file_picker_text = Style(style.large_button_text)
     style.large_button.idle_color = "#2E2E2E"
     style.large_button.hover_color = "#ccc"
+
+    store.branched_saves = {}
 
 
 

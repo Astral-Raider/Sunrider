@@ -3353,3 +3353,21 @@ init -2 python:
             
         def __call__(self):
             renpy.restart_interaction()
+
+    class SplitSave(Action):
+        def __init__(self, index):
+            Action.__init__(self)
+            self.index = index
+
+        def __call__(self):
+            branched_saves[self.index] = branched_saves.get(self.index, 1) + 1
+            renpy.restart_interaction()
+
+    class MergeSave(Action):
+        def __init__(self, index):
+            Action.__init__(self)
+            self.index = index
+
+        def __call__(self):
+            branched_saves[self.index] = branched_saves.get(self.index, 2) - 1
+            renpy.restart_interaction()
