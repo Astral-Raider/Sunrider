@@ -95,7 +95,7 @@ init -2:  ##0) transforms
         alpha 1
         easein 1.0 ypos int(yy-80*zoomlevel)
 
-screen battle_screen:
+screen battle_screen_old:
     tag tactical
     modal False
     zorder -5
@@ -113,7 +113,7 @@ screen battle_screen:
     ##messing with the player for fun and profit
     if BM.battlemode:
         timer 900 repeat False action Show('game_over_gimmick')
-
+    
     add MouseTracker() #relates drags and clicks to the viewport and the BM
 
     if config.developer: #a release version should have set this to False
@@ -162,6 +162,19 @@ screen battle_screen:
                 size (xsize,ysize)
                 xpos int(HEXW * zoomlevel)
                 ypos int((HEXD-2) * zoomlevel)
+
+        ##legion warning indicator
+        ##the idea that uses this has been scrapped, but I'll keep the code around in case it proves useful in the future
+#        if hasattr(store,'legion'):
+#            if legion.active:
+#                if legion.row != 0:
+#                    text '  - - - - warning - - - - - warning - - - - - warning- - - - - warning - - - -  ':
+#                        color 'f00' ypos int(120*(legion.row-0.25) *zoomlevel)
+#                        size int(120*zoomlevel)
+##                        layout nowrap
+
+          ##display shield and flak ranges
+          ##I'm sure this could be made to be much much faster
 
         if not BM.hovered == None: #when you hover over a ship
             if BM.hovered.shield_generation > 0:
@@ -298,13 +311,17 @@ screen battle_screen:
                         zoom (zoomlevel/2.0)
                         at cursedown(yposition-(190)*zoomlevel)
 
+                
             ## as of the new UI interact code (with MouseTracker) most of the following is defunct.
             ## only the parts that affect lbl do anything anymore.
-
+            
                 #default values
                 $mode = '' #default
+                # $act = Return(['selection',ship])
                 $lbl = ship.lbl
                 $hvr = hoverglow(ship.lbl)
+                # $hvrd = SetField(BM,'hovered',ship)
+                # $unhvrd = SetField(BM,'hovered',None)
 
                 #some properties of the imagebutton representing a ship change depending on circumstances
                 if ship.faction == 'Player':
@@ -342,21 +359,24 @@ screen battle_screen:
 
                 if mode == 'target':
                     $ lbl = hoverglow(ship.lbl)
+                    # $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(0.2))
                 elif mode == 'offline':
+                    # $ act = NullAction()
+                    # $ hvr = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
                     $ lbl = im.MatrixColor(ship.lbl,im.matrix.brightness(-0.3))
 
                 if BM.hovered != None:
                     if BM.hovered == ship:
                         if mode != 'offline':
                             $ lbl = hoverglow(ship.lbl)
-
+                
                 add lbl:
                     xanchor 0.5
                     yanchor 0.5
                     xpos xposition
                     ypos yposition
                     zoom (zoomlevel/2.5)
-
+                
                 if ship.getting_buff:
                     add 'Battle UI/buff_front.png':
                         xpos int(xposition-96*zoomlevel)
@@ -373,12 +393,27 @@ screen battle_screen:
                 if ship.faction == 'Player':
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.66 * ADJY) + int(zoomlevel * MOVY)
-                    $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                    add 'Battle UI/label hp bar.png':
-                        xpos xposition
-                        ypos yposition
-                        zoom (zoomlevel/2.5)
-                        crop (0,0,hp_size,79)
+                    $hp_size = int(405*(ship.max_hp))
+                    if float(ship.hp) > (ship.max_hp * 50 / 100):
+                        add 'Battle UI/label hp bar green.png':
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,79)
+
+                    if float(ship.hp) <= (ship.max_hp * 50 / 100) and float(ship.hp) > (ship.max_hp * 25 / 100):
+                        add 'Battle UI/label hp bar yellow.png':
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,79)
+
+                    if float(ship.hp) <= (ship.max_hp * 25 / 100):
+                        add 'Battle UI/label hp bar red.png':
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,79)
 
                     $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.08 * ADJX) + int(zoomlevel * MOVX)
                     $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.72 * ADJY) + int(zoomlevel * MOVY)
@@ -388,32 +423,48 @@ screen battle_screen:
                         ypos yposition
                         zoom (zoomlevel/2.5)
                         crop (0,0,energy_size,79)
-
+                        
                     text str(ship.hp):
                         xanchor 0.5
                         yanchor 0.5
                         xpos int(xposition+80*zoomlevel)
                         ypos int(yposition+27*zoomlevel)
-                        size int(16*zoomlevel)
+                        size int(20*zoomlevel)
                         font "Font/sui generis rg.ttf"
-                        outlines [(2,'000',0,0)]
+                        outlines [(2,'000',0,0)]                        
 
                 else:    #enemies
-                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
-                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
-                    $hp_size = int(405*(float(ship.hp)/ship.max_hp))
-                    add 'Battle UI/label hp bar.png':
-                        xpos xposition
-                        ypos yposition
-                        zoom (zoomlevel/2.5)
-                        crop (0,0,hp_size,90)
+
+                    $xposition = dispx(ship.location[0],ship.location[1],zoomlevel,0.0675 * ADJX) + int(zoomlevel * MOVX)
+                    $yposition = dispy(ship.location[0],ship.location[1],zoomlevel,0.65 * ADJY) + int(zoomlevel * MOVY)
+                    $hp_size = int(405*(ship.max_hp))
+                    if float(ship.hp) > (ship.max_hp * 50 / 100):
+                        add 'Battle UI/label hp bar enemy green.png':
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,120)
+
+                    if float(ship.hp) <= (ship.max_hp * 50 / 100) and float(ship.hp) > (ship.max_hp * 25 / 100):
+                        add 'Battle UI/label hp bar enemy yellow.png':
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,120)
+
+                    if float(ship.hp) <= (ship.max_hp * 25 / 100):
+                        add 'Battle UI/label hp bar enemy red.png':
+                            xpos xposition
+                            ypos yposition
+                            zoom (zoomlevel/2.5)
+                            crop (0,0,hp_size,120)
 
                     text str(ship.hp):
                         xanchor 0.5
                         yanchor 0.5
                         xpos int(xposition+80*zoomlevel)
                         ypos int(yposition+27*zoomlevel)
-                        size int(16*zoomlevel)
+                        size int(20*zoomlevel)
                         font "Font/sui generis rg.ttf"
                         outlines [(2,'000',0,0)]
 
@@ -485,73 +536,6 @@ screen battle_screen:
         if BM.weaponhover != None or BM.targetingmode and BM.selected != None:
             $ selected = BM.selected  #the screen sometimes loses track of BM.selected and crashes so a local is required
 
-            # draw missile path
-            if BM.hovered != None and BM.active_weapon != None and (BM.active_weapon.wtype == 'Missile' or BM.active_weapon.wtype == 'Rocket'):
-                $ loc1 = selected.location
-                $ loc2 = BM.hovered.location
-                $ tiles = interpolate_hex(loc1, loc2)
-                $ effective_flak = 0
-                $ total_effective_flak = 0
-                for i, tile in enumerate(tiles):
-                    $xposition = dispx(tile[0],tile[1],zoomlevel)
-                    $yposition = dispy(tile[0],tile[1],zoomlevel)
-                    $xsize = int((HEXW + 4) * zoomlevel)
-                    $ysize = int((HEXH + 4) * zoomlevel)
-
-                    add "Battle UI/missile hex.png":
-                        xpos xposition
-                        ypos yposition
-                        size (xsize,ysize)
-                        alpha 0.4
-
-                    for ship in BM.ships:
-                        if ship.location is not None and not ship.flak_used:
-                            if ship.faction != 'Player':
-                                if get_distance(tile,ship.location) <= ship.flak_range:
-                                    if BM.active_weapon.wtype == 'Rocket':
-                                        #this looks double but missile_eccm is from a ship through upgrades whereas weaponhover.eccm is rom the rocket itself. (default 10)
-                                        $ effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm - BM.weaponhover.eccm)
-                                    else:
-                                        $effective_flak = (ship.flak + ship.modifiers['flak'][0] - selected.missile_eccm)
-                                    if effective_flak > 100:
-                                        $ effective_flak = 100
-                                    elif effective_flak < 0:
-                                        $ effective_flak = 0
-
-                                    $ total_effective_flak = total_effective_flak + (1 - total_effective_flak/100.0) * effective_flak
-                                    $ ship.flak_used = True
-
-                    if total_effective_flak > 100:
-                        $total_effective_flak = 100
-
-                    if i+1 == len(tiles):
-                        if total_effective_flak > 0:
-                            # FIXME I canna get tile[0] and tile[1] to work properly
-                            add 'Battle UI/icon_intercept.png':
-                                zoom (2 * zoomlevel)
-                                #alpha 0.7
-                                xpos xposition
-                                ypos yposition
-                                xoffset xsize/3
-                                yoffset ysize/2
-                                xanchor 0.5
-                                yanchor 0.5
-                            text ('{0:.2g}'.format(total_effective_flak) + "%"):
-                                xpos xposition
-                                ypos yposition
-                                xoffset xsize/3
-                                yoffset ysize/2
-                                xanchor 0.5
-                                yanchor 0.5
-                                size (30 * zoomlevel)
-                                color 'bbb'
-                                outlines [(2,'000',0,0)]
-
-                for ship in BM.ships:
-                    $ ship.flak_used = False
-                $ effective_flak = 0
-                $ total_effective_flak = 0
-
             for ship in BM.ships:
                 if ship.location != None:
 
@@ -564,7 +548,7 @@ screen battle_screen:
                         pass
                     elif BM.weaponhover.wtype == 'Melee' and (ship.stype != 'Ryder' or get_ship_distance(ship,selected) > 1):
                         pass
-
+                    
                     #the gravity gun is a little... special
                     if BM.weaponhover.name == 'Gravity Gun' and ship.stype != 'Ryder':
                         pass
@@ -642,18 +626,44 @@ screen battle_screen:
                             size (14 * zoomlevel)
                             color 'fff'
 
+          #when you hover over an enemy ship the HP bar and HP text will overlay again on top of other ships.
+          #actually, with the hex grid overlap issues are mostly gone
+        # if BM.hovered != None: #when you hover over a ship
+            # $ hovered_ship = BM.hovered
+            # if hovered_ship.location == None:
+                # $ pass
+            # # elif hovered_ship.faction != 'Player':
+            # $xposition = dispx(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.09 * ADJX) + int(zoomlevel * MOVX)
+            # $yposition = dispy(hovered_ship.location[0],hovered_ship.location[1],zoomlevel,0.70 * ADJY) + int(zoomlevel * MOVY)
+            # $hp_size = int(405*(float(BM.hovered.hp)/BM.hovered.max_hp))
+            # add 'Battle UI/label hp bar.png':
+                # xpos xposition
+                # ypos yposition
+                # zoom (zoomlevel/2.5)
+                # crop (0,0,hp_size,90)
+
+            # text str(BM.hovered.hp):
+                # xanchor 0.5
+                # yanchor 0.5
+                # xpos int(xposition+80*zoomlevel)
+                # ypos int(yposition+27*zoomlevel)
+                # size int(16*zoomlevel)
+                # font "Font/sui generis rg.ttf"
+                # outlines [(2,'000',0,0)]
+
+
                 ##DISPLAY MOVEMENT OPTIONS##
         if BM.selectedmode and BM.selected != None:
             if BM.selected.faction == 'Player' and not BM.targetingmode and not BM.phase == 'formation':
                 for tile in BM.selected.movement_tiles:
                     $ lbl = 'Battle UI/move_tile.png'
                     $ tile_location = (tile[3],tile[4])
-
+                    
                     if get_counter_attack(tile_location) and BM.selected.modifiers['stealth'][0] == 0:
                         $ lbl = im.MatrixColor(lbl,im.matrix.tint(1.0, 0.5, 0.5))
-
+                    
                     if tile_location == BM.mouse_location:
-                        $ lbl = hoverglow(lbl)
+                        $ lbl = hoverglow(lbl)  
                     add lbl:
                         zoom (0.2 * zoomlevel)
                         alpha 0.5
@@ -712,7 +722,7 @@ screen battle_screen:
                     ypos yposition
                     size (xsize,ysize)
                     alpha 0.7
-
+                                
           #the Sunrider warps from one cell to another
         if BM.warping:
             for location in store.flash_locations:
@@ -760,14 +770,22 @@ screen battle_screen:
             xalign 1.0
             vbox:
                 xalign 1.0
-
-                if store.Difficulty < 3 or config.developer:
+                # textbutton "Battle Log" xalign 1.0 action Show('battle_log')
+                # if BM.edgescroll == (0,0):
+                    # textbutton "enable edgescroll" action SetField(BM,'edgescroll',(100,800*zoomlevel))
+                # else:
+                    # textbutton "disable edgescroll" action SetField(BM,'edgescroll',(0,0))
+                # if BM.show_tooltips:
+                    # textbutton "disable tooltips" xalign 1.0 action SetField(BM,'show_tooltips',False)
+                # else:
+                    # textbutton "enable tooltips"  xalign 1.0 action SetField(BM,'show_tooltips',True)
+                
+                if store.Difficulty < 3:
                     textbutton "restart turn" xalign 1.0 action Jump('restartturn')
-                if BM.mission == 'skirmish' or config.developer:
-                    textbutton "Player AI" xalign 1.0 action Return(['toggle player ai'])
-
+    
             if config.developer:
                 vbox:
+                    # ypos 100
                     xalign 1.0
                     textbutton "Debug Cheats" xalign 1.0 action Return(['cheat'])
                     textbutton "Fast Quit" xalign 1.0 action Jump('quit')
@@ -804,20 +822,21 @@ screen battle_screen:
             color 'fff'
             outlines [(1,'000',0,0)]
 
+
     if BM.phase == 'Player':
         $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(0.6, 1.0, 0.5))
         for ship in player_ships:
             if ship.en >= ship.max_en:
                 $endturnbutton_idle = im.MatrixColor('Battle UI/button_endturn.png',im.matrix.tint(1.0, 0.6, 0.5))
-
+    
         imagebutton:
             xpos 90
             yalign 1.0
             idle endturnbutton_idle
             hover hoverglow(endturnbutton_idle)
             action Return(['endturn'])
-
-    ## skirmish buttons start, return, remove, e.music, p.music
+            
+            
     if BM.phase == 'formation':
         imagebutton:
             xpos 170
@@ -825,7 +844,7 @@ screen battle_screen:
             idle 'Skirmish/start.png'
             hover hoverglow('Skirmish/start.png')
             action [ If( BM.selected==None , Return(['start']) ) ]
-
+            
         if BM.mission == 'skirmish':
             imagebutton:
                 xpos 88
@@ -833,18 +852,18 @@ screen battle_screen:
                 idle 'Skirmish/return.png'
                 hover hoverglow('Skirmish/return.png')
                 action Return(['quit'])
-
+        
             $ idl = 'Skirmish/remove.png'
             if BM.remove_mode:
                 $ idl = hoverglow(im.MatrixColor('Skirmish/remove.png',im.matrix.tint(1.0, 1.0, 0)))
-
+            
             imagebutton:
                 xpos 208
                 ypos 759
                 idle idl
                 hover hoverglow('Skirmish/remove.png')
                 action Return(['remove'])
-
+                
             imagebutton:
                 xpos 328
                 ypos 828
@@ -857,17 +876,8 @@ screen battle_screen:
                 ypos 897
                 idle 'Skirmish/playermusic.png'
                 hover hoverglow('Skirmish/playermusic.png')
-                action Show('player_music')
-                
-            imagebutton:
-                xpos 414
-                ypos 1022
-                xanchor 0.5
-                yanchor 0.5
-                idle 'Menu/res_button.png'
-                hover hoverglow('Menu/res_button.png')
-                action Jump('RnD_skirmish')
-
+                action Show('player_music')                 
+    
 transform move_down(ystart,yend,xx=0):
     xpos xx
     ypos ystart
@@ -878,10 +888,12 @@ transform move_down(ystart,yend,xx=0):
         time 2
         alpha 0
 
+
+
 screen orders:
     zorder 1
     modal True
-
+    
     key "mousedown_3" action [Hide('orders'),SetField(BM,'showing_orders',False)]
 
     frame:
@@ -915,7 +927,7 @@ screen orders:
 
                     hbox:
                         #I should rework orders to include this info :/
-
+                    
                         if order == 'REPAIR DRONES':
                             if sunrider.repair_drones != None:
                                 if sunrider.repair_drones == 0:
@@ -941,7 +953,7 @@ screen orders:
                                     size 18
                                     font "Font/sui generis rg.ttf"
                                     outlines [(1,'000',0,0)]
-
+                        
                         if order == 'ALL GUARD' and BM.show_tooltips == True:
                             frame:
                                 background Solid((0,0,0,200))
@@ -953,7 +965,7 @@ screen orders:
                                     ypos 0
                                     size 18
                                     font "Font/sui generis rg.ttf"
-                                    outlines [(1,'000',0,0)]
+                                    outlines [(1,'000',0,0)]                                    
 
                         if order == 'REPAIR DRONES' and BM.show_tooltips == True:
                             frame:
@@ -973,9 +985,9 @@ screen orders:
                                 background Solid((0,0,0,200))
                                 xpos 150
                                 ycenter 20
-
+                                
                                 $ damage = get_modified_damage(BM.vanguard_damage,'notplayer')
-                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of {} hexes.'.format(damage,BM.vanguard_range)):
+                                text str('Deals {} unavoidable damage to all units in a straight line extending outwards from the Sunrider with a maximum range of {} hexes.'.format(damage,BM.vanguard_range)):                                
                                     xpos 0
                                     ypos 0
                                     size 18
@@ -1007,7 +1019,7 @@ screen orders:
                                     size 18
                                     font "Font/sui generis rg.ttf"
                                     outlines [(1,'000',0,0)]
-
+                                    
                         if order == 'RETREAT' and BM.show_tooltips == True:
                             frame:
                                 background Solid((0,0,0,200))
@@ -1019,7 +1031,7 @@ screen orders:
                                     ypos 0
                                     size 18
                                     font "Font/sui generis rg.ttf"
-                                    outlines [(1,'000',0,0)]
+                                    outlines [(1,'000',0,0)]                                    
 
 
                                     #I couldn't get the mouse detection working properly with the buttons. Sorry! :S
@@ -1037,6 +1049,7 @@ screen orders:
         size 30
         color 'fff'
         outlines [(1,'000',0,0)]
+
 
 screen commands: ##show the weapon buttons etc##
     zorder 1 #always show on top of the battle screen
@@ -1057,7 +1070,12 @@ screen commands: ##show the weapon buttons etc##
 
         $hp_size = int(374*(float(BM.selected.hp)/BM.selected.max_hp))
         $en_size = int(298*(float(BM.selected.en)/BM.selected.max_en))
-        add 'Battle UI/status window_HP.png' xpos 1080 ypos 779 crop (0,0,hp_size,49)
+        if float(BM.selected.hp) > (BM.selected.max_hp * 50 / 100):
+            add 'Battle UI/status window_HP_green.png' xpos 1080 ypos 779 crop (0,0,hp_size,49)
+        if float(BM.selected.hp) <= (BM.selected.max_hp * 50 / 100) and float(BM.selected.hp) > (BM.selected.max_hp * 25 / 100):
+            add 'Battle UI/status window_HP_yellow.png' xpos 1080 ypos 779 crop (0,0,hp_size,49)
+        if float(BM.selected.hp) <= (BM.selected.max_hp * 25 / 100):
+            add 'Battle UI/status window_HP_red.png' xpos 1080 ypos 779 crop (0,0,hp_size,49)
         add 'Battle UI/status window_EN.png' xpos 1133 ypos 805 crop (0,0,en_size,19)
         text (str(BM.selected.hp) + '/' + str(BM.selected.max_hp)) xanchor 0.5 xpos 1510 ypos 779 size 19 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
         text (str(BM.selected.en) + '/' + str(BM.selected.max_en)) xanchor 0.5 xpos 1490 ypos 805 size 19 font "Font/sui generis rg.ttf" outlines [(1,'000',0,0)]
@@ -1203,7 +1221,9 @@ screen commands: ##show the weapon buttons etc##
                         outlines [(1,'000',0,0)]
 
                 $count += 1
+                
 
+                
 transform move_vertical(xstart,xend,xx=0):
     #used by skirmish windows
     xpos xstart
@@ -1212,15 +1232,15 @@ transform move_vertical(xstart,xend,xx=0):
         linear 0.5 xpos xstart
           #not sure why this is needed. I'm calling bug in renpy
         time 2
-        alpha 0
+        alpha 0                
 
 screen player_unit_pool_collapsed:
     #this just shows the 'add player units' text and puts a button over it
     zorder 2
-
+    
     add 'Skirmish/addplayer.png':
         xpos -152
-
+    
     button:
         background None
         xpos 0
@@ -1230,20 +1250,20 @@ screen player_unit_pool_collapsed:
         xminimum 40
         xmaximum 40
         action Show('player_unit_pool')
-
+    
 screen player_unit_pool:
     zorder 3
-
+    
     if BM.mission == 'skirmish':
         $ frame_background = 'Skirmish/addplayer.png'
     else:
         $ frame_background = 'Skirmish/addplayer_nocmd.png'
-
+    
     frame:
         background frame_background
         xmaximum 182
         at move_vertical(-152,0)
-
+        
         vbox:
             for ship in player_ships:
                 if ship.location == None and ship != BM.selected:
@@ -1251,8 +1271,8 @@ screen player_unit_pool:
                         at zoom_button(0.2)
                         idle ship.lbl
                         hover hoverglow(ship.lbl)
-                        action Return(['selection',ship])
-
+                        action Return(['selection',ship]) 
+        
     button:
         background None  # Solid((0,0,0,255)) #for testing
         xpos 152
@@ -1262,9 +1282,9 @@ screen player_unit_pool:
         xminimum 40
         xmaximum 40
         action Hide('player_unit_pool')
-
+        
     if BM.mission == 'skirmish':
-
+        
         text str(BM.cmd):
             xalign 0.5
             xpos 75
@@ -1277,9 +1297,9 @@ screen player_unit_pool:
             ypos 1038
             idle 'skirmish/increase_cmd.png'
             hover hoverglow('skirmish/increase_cmd.png')
-            action SetField( BM , 'cmd' , (BM.cmd + 100) )
+            action SetField( BM , 'cmd' , (BM.cmd + 100) ) 
             alternate SetField( BM , 'cmd' , (BM.cmd + 1000) )
-
+            
         imagebutton:
             xpos 80
             ypos 1038
@@ -1287,13 +1307,14 @@ screen player_unit_pool:
             hover hoverglow('skirmish/decrease_cmd.png')
             action If( BM.cmd <= 100 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 100)) )
             alternate If( BM.cmd <= 1000 , SetField(BM,'cmd',0) , SetField(BM,'cmd',(BM.cmd - 1000)) )
+        
 
 screen enemy_unit_pool_collapsed:
     zorder 2
-
+    
     add 'Skirmish/addenemy.png':
         xpos 1890
-
+    
     button:
         background None
         xpos 1890
@@ -1306,33 +1327,33 @@ screen enemy_unit_pool_collapsed:
 
 screen enemy_unit_pool:
     zorder 3
-
+    
     #I will want to put this in a BM field and add new stuff when they get encountered.
     #I think I'll modify the create_ship function to add it automatically if it's not there yet
     $ all_enemies = store.all_enemies
-
+    
     frame:
         background 'Skirmish/addenemy.png'
         # xalign 1.0
         xmaximum 176
         at move_vertical(1890,1744)
-
+        
         viewport:
             xpos 20
             ypos 20
             mousewheel True #luckily this viewport eats scrolls above it, so the main one doesn't return it.
             scrollbars "vertical"
-
+            
             vbox:
                 spacing 20
-
+                
                 for ship in all_enemies:
                     imagebutton:
                         at zoom_button(0.15)
                         idle ship.lbl
                         hover hoverglow(ship.lbl)
                         action Return(['selection',ship])
-
+                        
     button:
         background None
         xpos 1738
@@ -1341,38 +1362,36 @@ screen enemy_unit_pool:
         ymaximum 250
         xminimum 40
         xmaximum 40
-        action Hide('enemy_unit_pool')
+        action Hide('enemy_unit_pool')                        
 
 screen player_music:
     modal True
-
+    
     #maybe this list should be defined in the inits
     python:
         music_list = {
             "Driving The Top Down": 'Music/Driving_the_Top_Down.ogg',
             "La Busqueda de Lanna": 'Music/La_Busqueda_de_Lanna.ogg',
-            "Overpowered": 'Music/Overpowered.ogg',
             "Powerful": 'Music/Powerful.ogg',
             "Riding With The Wind": 'Music/Riding_With_the_Wind.ogg',
-            "The Bladed Druid": 'Music/The_Bladed_Druid.ogg',
-            "Titan": 'Music/Titan.ogg',
+            "Titan": 'Music/Titan.ogg'
             }
-
+            
     add "Skirmish/playermusic_back.png"
-
+    
     vbox:
         xalign 0.4
         yalign 0.4
         spacing 20
-
-        for song in music_list:
+        
+        for song in music_list: 
 
             button:
                 xpos 0
                 idle_background "Skirmish/song_button.png"
                 hover_background hoverglow("Skirmish/song_button.png")
                 action [ Hide('player_music'), Return( ["playermusic",music_list[song]] ) ]
-
+                
                 text song:
                     min_width 544   #length of the background. needed for hover
                     xalign 0.5
@@ -1381,7 +1400,7 @@ screen player_music:
 
 screen enemy_music:
     modal True
-
+    
     python:
         music_list = {
             "Battle Against Time": 'Music/Battle_Against_Time.ogg',
@@ -1389,32 +1408,37 @@ screen enemy_music:
             "Intruders": 'Music/Intruders.ogg',
             "Poltergeist Attack": 'Music/Poltergeist_Attack.ogg',
             "Posthumus Regium": 'Music/Posthumus_Regium.ogg',
-            "Sui Generis": 'Music/Sui_Generis.ogg',
-            "The Departure": 'Music/The_Departure.ogg',
-            "The Flight of the Crow": 'music/The_Flight_of_the_Crow.ogg',
+            "Sui Generis": 'Music/Sui_Generis.ogg'
             }
-
+             
     add "Skirmish/enemymusic_back.png"
-
+    
     vbox:
         xalign 0.4
         yalign 0.4
         spacing 20
-
-        for song in music_list:
+        
+        for song in music_list: 
 
             button:
                 xpos 0
                 idle_background "Skirmish/song_button.png"
                 hover_background hoverglow("Skirmish/song_button.png")
                 action [ Hide('enemy_music'), Return( ["enemymusic",music_list[song]] ) ]
-
+                
                 text song:
                     min_width 544   #length of the background. needed for hover
                     xalign 0.5
                     color '000'
-                    size 28
-
+                    size 28                    
+                    
+            
+        
+        
+        
+        
+        
+        
 screen tooltips:
     zorder 9
 
@@ -1440,6 +1464,7 @@ screen tooltips:
                     font "Font/sui generis rg.ttf"
                     outlines [(1,'000',0,0)]
 
+
 transform hp_falls(hp_size1,hp_size2):
     crop (0,0,hp_size1,42)
     linear 1 crop (0,0,hp_size2,42)
@@ -1448,6 +1473,7 @@ transform float_up:
     xpos 0.5
     ypos 0.5
     linear 3 ypos 0.2 alpha 0
+
 
 screen animation_hp:
     zorder 2
@@ -1463,15 +1489,38 @@ screen animation_hp:
         $current_hp = BM.target.hp+ store.damage
 
     $hp_size1 = int(409*(float(current_hp)/BM.target.max_hp))
-    add 'Battle UI/dmgstatus_bar.png':
-        xpos 1340
-        ypos 3
-        crop (0,0,hp_size1,42)
-    text 'HP: {!s}/{!s}'.format(current_hp,BM.target.max_hp):
-        xpos 1750
-        ypos 8
-        size 19
-        color 'fff'
+    if float(current_hp) > (BM.target.max_hp * 50 / 100):
+        add 'Battle UI/dmgstatus_bar_green.png':
+            xpos 1340
+            ypos 3
+            crop (0,0,hp_size1,42)
+        text 'HP: {!s}/{!s}'.format(current_hp,BM.target.max_hp):
+            xpos 1750
+            ypos 8
+            size 19
+            color 'fff'
+
+    if float(current_hp) <= (BM.target.max_hp * 50 / 100) and float(current_hp) > (BM.target.max_hp * 25 / 100):
+        add 'Battle UI/dmgstatus_bar_yellow.png':
+            xpos 1340
+            ypos 3
+            crop (0,0,hp_size1,42)
+        text 'HP: {!s}/{!s}'.format(current_hp,BM.target.max_hp):
+            xpos 1750
+            ypos 8
+            size 19
+            color 'fff'
+
+    if float(current_hp) <= (BM.target.max_hp * 25 / 100):
+        add 'Battle UI/dmgstatus_bar_red.png':
+            xpos 1340
+            ypos 3
+            crop (0,0,hp_size1,42)
+        text 'HP: {!s}/{!s}'.format(current_hp,BM.target.max_hp):
+            xpos 1750
+            ypos 8
+            size 19
+            color 'fff'
 
 screen animation_hp2:
     zorder 3
@@ -1488,64 +1537,158 @@ screen animation_hp2:
     $hp_size1 = int(409*(float(current_hp)/BM.target.max_hp))
     $hp_size2 = int(409*(float(current_hp-damage)/BM.target.max_hp))
 
-    add 'Battle UI/dmgstatus_bar.png':
-        xpos 1340
-        ypos 3
-        at hp_falls(hp_size1,hp_size2)
+    if float(current_hp) > (BM.target.max_hp * 50 / 100) or (float(current_hp-damage)) > (BM.target.max_hp * 50 / 100):
+        add 'Battle UI/dmgstatus_bar_green.png':
+            xpos 1340
+            ypos 3
+            at hp_falls(hp_size1,hp_size2)
 
-    text 'HP: {!s}/{!s}'.format((current_hp-damage),BM.target.max_hp):
-        xpos 1750
-        ypos 8
-        size 19
-        color 'fff'
-    text '{!s}'.format(damage):
-        xanchor 1.0
-        xpos 1670
-        ypos 45
-        size 40
-        color '800'
-        outlines [(1,'fff',0,0)]
-    text '{!s}'.format(store.hit_count):
-        xanchor 1.0
-        xpos 1780
-        ypos 45
-        size 40
-        color '800'
-        outlines [(1,'fff',0,0)]
-    text '{!s}'.format(-damage):
-        xanchor 0.5
-        at float_up
-        size 30
-        color '800'
-        outlines [(1,'fff',0,0)]
+        text 'HP: {!s}/{!s}'.format((current_hp-damage),BM.target.max_hp):
+            xpos 1750
+            ypos 8
+            size 19
+            color 'fff'
+        text '{!s}'.format(damage):
+            xanchor 1.0
+            xpos 1670
+            ypos 45
+            size 40
+            color '800'
+            outlines [(1,'fff',0,0)]
+        text '{!s}'.format(store.hit_count):
+            xanchor 1.0
+            xpos 1780
+            ypos 45
+            size 40
+            color '800'
+            outlines [(1,'fff',0,0)]
+        text '{!s}'.format(-damage):
+            xanchor 0.5
+            at float_up
+            size 30
+            color '800'
+            outlines [(1,'fff',0,0)]
 
-    vbox:
-        xalign 1.0
-        ypos 0.2
+        vbox:
+            xalign 1.0
+            ypos 0.2
 
-        # moved shield to before armor since it is applied first
-        if store.total_shield_negation > 0:
-            text ( '{image=Battle UI/icon_shield.png} ' + '-{} dmg'.format(int(store.total_shield_negation)) ):
-                xalign 1.0
-                xoffset -32
-                size 32
-                color '6bf'
-                outlines [(1,'000',0,0)]
-        if store.total_armor_negation > 0:
-            text ( '{image=Battle UI/icon_armor.png} ' + '-{} dmg'.format(int(store.total_armor_negation)) ):
-                xalign 1.0
-                xoffset -32
-                size 32
-                color 'fff'
-                outlines [(1,'000',0,0)]
+            if store.total_shield_negation > 0:
+                text ( '{image=Battle UI/icon_shield.png} ' + '-{} dmg'.format(int(store.total_shield_negation)) ):
+                    xalign 1.0
+                    xoffset -32
+                    size 32
+                    color '6bf'
+                    outlines [(1,'000',0,0)]
+            if store.total_armor_negation > 0:
+                text ( '{image=Battle UI/icon_armor.png} ' + '-{} dmg'.format(int(store.total_armor_negation)) ):
+                    xalign 1.0
+                    xoffset -32
+                    size 32
+                    color 'fff'
+                    outlines [(1,'000',0,0)]
 
-        if hasattr(store,'total_flak_interception') and store.total_flak_interception > 0:
-            text ( '{image=Battle UI/icon_intercept.png} ' + '{} intercepts'.format(int(store.total_flak_interception)) ):
-                xalign 1.0
-                xoffset -32
-                size 32
-                color 'fa6'
-                outlines [(1,'000',0,0)]
+    if (float(current_hp) <= (BM.target.max_hp * 50 / 100)) and (float(current_hp) > (BM.target.max_hp * 25 / 100)) or ((float(current_hp-damage)) <= (BM.target.max_hp * 50 / 100)) and ((float(current_hp-damage)) > (BM.target.max_hp * 25 / 100)):
+        add 'Battle UI/dmgstatus_bar_yellow.png':
+            xpos 1340
+            ypos 3
+            at hp_falls(hp_size1,hp_size2)
+
+        text 'HP: {!s}/{!s}'.format((current_hp-damage),BM.target.max_hp):
+            xpos 1750
+            ypos 8
+            size 19
+            color 'fff'
+        text '{!s}'.format(damage):
+            xanchor 1.0
+            xpos 1670
+            ypos 45
+            size 40
+            color '800'
+            outlines [(1,'fff',0,0)]
+        text '{!s}'.format(store.hit_count):
+            xanchor 1.0
+            xpos 1780
+            ypos 45
+            size 40
+            color '800'
+            outlines [(1,'fff',0,0)]
+        text '{!s}'.format(-damage):
+            xanchor 0.5
+            at float_up
+            size 30
+            color '800'
+            outlines [(1,'fff',0,0)]
+
+        vbox:
+            xalign 1.0
+            ypos 0.2
+
+            if store.total_shield_negation > 0:
+                text ( '{image=Battle UI/icon_shield.png} ' + '-{} dmg'.format(int(store.total_shield_negation)) ):
+                    xalign 1.0
+                    xoffset -32
+                    size 32
+                    color '6bf'
+                    outlines [(1,'000',0,0)]
+            if store.total_armor_negation > 0:
+                text ( '{image=Battle UI/icon_armor.png} ' + '-{} dmg'.format(int(store.total_armor_negation)) ):
+                    xalign 1.0
+                    xoffset -32
+                    size 32
+                    color 'fff'
+                    outlines [(1,'000',0,0)]
+
+    if float(current_hp) <= (BM.target.max_hp * 25 / 100) or (float(current_hp-damage)) <= (BM.target.max_hp * 25 / 100):
+        add 'Battle UI/dmgstatus_bar_red.png':
+            xpos 1340
+            ypos 3
+            at hp_falls(hp_size1,hp_size2)
+
+        text 'HP: {!s}/{!s}'.format((current_hp-damage),BM.target.max_hp):
+            xpos 1750
+            ypos 8
+            size 19
+            color 'fff'
+        text '{!s}'.format(damage):
+            xanchor 1.0
+            xpos 1670
+            ypos 45
+            size 40
+            color '800'
+            outlines [(1,'fff',0,0)]
+        text '{!s}'.format(store.hit_count):
+            xanchor 1.0
+            xpos 1780
+            ypos 45
+            size 40
+            color '800'
+            outlines [(1,'fff',0,0)]
+        text '{!s}'.format(-damage):
+            xanchor 0.5
+            at float_up
+            size 30
+            color '800'
+            outlines [(1,'fff',0,0)]
+
+        vbox:
+            xalign 1.0
+            ypos 0.2
+
+            if store.total_shield_negation > 0:
+                text ( '{image=Battle UI/icon_shield.png} ' + '-{} dmg'.format(int(store.total_shield_negation)) ):
+                    xalign 1.0
+                    xoffset -32
+                    size 32
+                    color '6bf'
+                    outlines [(1,'000',0,0)]
+            if store.total_armor_negation > 0:
+                text ( '{image=Battle UI/icon_armor.png} ' + '-{} dmg'.format(int(store.total_armor_negation)) ):
+                    xalign 1.0
+                    xoffset -32
+                    size 32
+                    color 'fff'
+                    outlines [(1,'000',0,0)]
 
 transform victory_tf(xx,wait):
     alpha 0
@@ -1619,11 +1762,8 @@ screen victory2:
     if store.boss_killed:
         $ total_ships += len(enemy_ships)
 
-    $total_wait_time = len(destroyed_ships) * 0.2
-    if total_wait_time > 3.0: 
-        $ total_wait_time = 3.0
-    $ wait_time = total_wait_time / len(destroyed_ships)
-
+    $ wait_time = 3.0 / len(destroyed_ships)
+    
     for ship in destroyed_ships:
         if not ship.faction == 'Player':
             add ship.blbl:
@@ -1637,7 +1777,7 @@ screen victory2:
                 at victory_ships(xx,wait,1)
 
             $ wait += wait_time
-
+                
             $xx += 1520/total_ships
 
     if store.boss_killed:
@@ -1694,7 +1834,7 @@ screen victory2:
             outlines [(2,'000',0,0)]
             at delay_text(wait)
         $ yposition += 0.05
-
+    
     $wait += 0.1
     text 'net gain: {}$'.format(int(store.net_gain)):
         xpos 0.2
@@ -1722,11 +1862,11 @@ screen victory2:
         at delay_text(wait)
 
     $wait += 0.1
-
+    
     $ difficulty_penalty = store.Difficulty - 1
-    if difficulty_penalty < 0:
+    if difficulty_penalty < 0: 
         $ difficulty_penalty = 0
-
+                
     text 'command points received: {}'.format( int( (store.net_gain*10)/(BM.turn_count+difficulty_penalty) ) ):
         xanchor 1.0
         xpos 0.8
@@ -1734,20 +1874,21 @@ screen victory2:
         size 40
         outlines [(2,'000',0,0)]
         at delay_text(wait)
-
+        
     $ diff_text = "Current difficulty: {}".format( DIFFICULTY_NAMES[store.Difficulty] )
     $ low_diff_text = "lowest difficulty: {}".format( DIFFICULTY_NAMES[BM.lowest_difficulty] )
-
+    
     vbox:
         xalign 1.0
         yalign 1.0
-
+        
         text diff_text:
             size 12
             xalign 1.0
         text low_diff_text:
             size 12
             xalign 1.0
+        
 
 transform message_transform(x,y):
     # These control the position.
@@ -1784,16 +1925,16 @@ screen mousefollow:
 screen ryderlist:
     zorder 3
     modal True
-
+    
     key "mousedown_3" action Return(["deselect"])
-
+    
     text 'Choose which Ryder to repair':
             xalign 0.5
             yalign 0.1
             size 40
             outlines [(2,'000',0,0)]
-
-
+            
+    
     frame:
         xalign 0.5
         ypos 0.2
@@ -1802,7 +1943,7 @@ screen ryderlist:
         yminimum 300
         ymaximum 800
         background Solid((0,0,0,200))
-
+        
         $ count = 0
         for iconship in destroyed_ships:
             if iconship.faction == 'Player' and not iconship.mercenary and iconship.stype == 'Ryder':
@@ -1848,9 +1989,9 @@ screen ryderlist:
                     focus_mask True
 
                 $ count += 1
-
+        
 screen skirmishhelp:
-
+    
     frame:
         xalign 0.5
         ypos 0.2
@@ -1859,7 +2000,7 @@ screen skirmishhelp:
         yminimum 300
         ymaximum 800
         background Solid((0,0,0,200))
-
+        
         vbox:
             text "Welcome to skirmish mode! Here, you will be able to refine your strategies by fighting custom battles."
             text "Click on ADD PLAYER SHIPS and click and drop your units to the map. Do the same to add enemy units."
@@ -1868,7 +2009,7 @@ screen skirmishhelp:
             text "To remove placed units, simply press the REMOVE button, then click on the unit you wish to remove."
             text "You may set the amount of usable command points during the battle using the buttons on the player pool bar."
             text "However, you will not earn any money or command points in Skirmish Mode."
-
+            
             textbutton "PROCEED":
                 xalign 0.5
                 action Hide('skirmishhelp')
@@ -1889,8 +2030,8 @@ screen battle_log():
     default filter_debuff   = True
     default log_tags        = set(['all', 'system', 'player', 'enemy', 'order', 'attack', 'detailed', 'laser', 'kinetic', 'missile', 'melee', 'support', 'heal', 'buff', 'debuff'])
     drag:
-        xalign 1.0
-        yalign 0.0
+        xalign 0.5
+        ypos 0.2
         frame:
             xpadding 10
             ypadding 10
@@ -1998,10 +2139,10 @@ screen battle_log():
                                         SelectedIf(filter_support)]
                         textbutton "details":
                             action [ToggleScreenVariable("filter_details")]
-
+                            
                     textbutton "X":
                         xalign 1.0
-                        action [Hide('battle_log'), SetField(BM, 'show_battle_log', False)]
+                        action Hide('battle_log')
 
                 side "c r":
                     viewport:
@@ -2055,7 +2196,7 @@ screen battle_log():
                                 #To be printed log's tags should contain tags which are stored in filter
                                 if log_tags.issuperset(set(type)):
                                     text entry
-
+                                    
                     vbar:
                         value YScrollValue('battle log')
                         hovered SetField(BM, 'draggable', False)
@@ -2081,7 +2222,7 @@ screen game_over_gimmick:
             $randt = renpy.random.randint(100,600) / 100.0
     #        text 'Game Over!' xpos randx ypos randy size randint at gameovergimmick(randx,randy, randt)
             add 'Battle UI/label_pactbattleship.png' xpos randx ypos randy zoom (randint / 300.0) at gameovergimmick(randx,randy, randt)
-
+            
 screen debug_window:
     zorder 100
     # modal True
@@ -2099,7 +2240,7 @@ screen debug_window:
             yminimum 100
             ymaximum 400
             background Solid((0,0,0,200))
-
+            
             vbox:
                 hbox:
                     xfill True
@@ -2109,8 +2250,8 @@ screen debug_window:
                         action SetField(BM,'debug_log',[])
                     textbutton "X":
                         xalign 1.0
-                        action Hide('debug_window')
-
+                        action Hide('debug_window')            
+            
                 side "c r":
                     viewport:
                         id 'debug log'
@@ -2121,5 +2262,6 @@ screen debug_window:
                     vbar:
                         value YScrollValue('debug log')
                         hovered SetField(BM, 'draggable', False)
-                        unhovered SetField(BM, 'draggable', True)
-
+                        unhovered SetField(BM, 'draggable', True)        
+            
+        
