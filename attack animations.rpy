@@ -24,47 +24,44 @@ label atkanim_sunrider_kinetic:
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
         ease 0.3 xpos 0.15
-    pause 0.5
+    pause 1.0
     show ava uniform alt order angry:
         ease 1.5 alpha 0
+    pause 1.0
 
     show layer master at shake1
     show sunrider_side kineticrear with dissolveflash
     show sunrider_kineticround1:
-        xpos 1180 ypos 455
-        linear 0.15 xpos 2150 ypos 430
-    show sunrider_side with dissolveflash
+        xpos 1180 ypos 460
+        linear 0.15 xpos 2150 ypos 434
     play sound1 'sound/railgun.ogg'
-    pause 0.05
-
-    show layer master at shake1
-    show sunrider_side kineticrear with dissolveflash
     show sunrider_kineticround2:
-        xpos 1180 ypos 450
-        linear 0.15 xpos 2150 ypos 425
-    play sound2 'sound/railgun.ogg'
-    pause 0.2
-
-    show layer master at shake1
-    show sunrider_side kineticfront with dissolveflash
+        xpos 1180 ypos 453
+        linear 0.15 xpos 2150 ypos 428
     show sunrider_kineticround3:
-        xpos 1300 ypos 465
-        linear 0.15 xpos 2150 ypos 420
+        xpos 1180 ypos 446
+        linear 0.15 xpos 2150 ypos 422
+    pause 0.025
     show sunrider_side with dissolveflash
-    play sound1 'sound/railgun.ogg'
-    pause 0.05
+    
+    pause 0.475
 
     show layer master at shake1
     show sunrider_side kineticfront with dissolveflash
-    show layer master at shake1
-    show sunrider_kineticround4:
-        xpos 1300 ypos 460
-        linear 0.15 xpos 2150 ypos 415
+    show sunrider_kineticround1:
+        xpos 1300 ypos 470
+        linear 0.15 xpos 2150 ypos 424
     play sound2 'sound/railgun.ogg'
-    pause 0.05
-    show sunrider_side with dissolvequick
+    show sunrider_kineticround2:
+        xpos 1300 ypos 463
+        linear 0.15 xpos 2150 ypos 418
+    show sunrider_kineticround3:
+        xpos 1300 ypos 456
+        linear 0.15 xpos 2150 ypos 412
+    pause 0.025
+    show sunrider_side with dissolveflash
 
-    pause 0.5
+    pause 0.975
     return
 
 label atkanim_sunrider_laser:
@@ -93,11 +90,11 @@ label atkanim_sunrider_laser:
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
         ease 0.3 xpos 0.15
-    pause 0.75
-    play sound2 'sound/Laser 1.ogg'
-
+    pause 1.0
     show ava uniform alt order angry:
         ease 1.5 alpha 0
+    play sound2 'sound/Laser 1.ogg'
+    pause 1.0
 
     show sunrider_side_laserfront:
         xpos 0.5 ypos 0.5
@@ -109,7 +106,7 @@ label atkanim_sunrider_laser:
     hide sunrider_side_laserback
     with laserwipe
 
-    pause 0.5
+    pause 1.0
     return
 
 label atkanim_sunrider_missile:
@@ -138,11 +135,11 @@ label atkanim_sunrider_missile:
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
         ease 0.3 xpos 0.15
-    pause 0.75
+    pause 1.0
     show ava uniform alt order angry:
         ease 1.5 alpha 0
 
-    pause 0.25
+    pause 1.0
     play sound2 'sound/missilelaunch.ogg'
     show sunrider_missile1:
         yanchor 50 xanchor 240 xpos 600 ypos 470
@@ -151,7 +148,7 @@ label atkanim_sunrider_missile:
         yanchor 50 xanchor 240 xpos 600 ypos 480
         linear 1.1 xpos 2040 ypos 25
 
-    pause 0.13
+    pause 0.2
 
     show sunrider_missile3:
         yanchor 50 xanchor 240 xpos 860 ypos 480
@@ -161,7 +158,7 @@ label atkanim_sunrider_missile:
         linear 0.95 xpos 2040 ypos 130
     show sunrider_missile_trail with sunridermissilewipe
     hide sunrider_missile_trail with dissolve
-    pause 0.5
+    pause 1.0
 
     return
 
@@ -186,9 +183,10 @@ label atkanim_sunrider_pulse:
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
         ease 0.3 xpos 0.15
-    pause 0.5
+    pause 1.0
     show ava uniform alt order angry:
         ease 1.5 alpha 0
+    pause 1.0
 
     play sound1 "sound/laser.wav"
     show sunrider_side pulsefront with dissolveflash
@@ -381,9 +379,10 @@ label atkanim_sunrider_assault:
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
         ease 0.3 xpos 0.15
-    pause 0.5
+    pause 1.0
     show ava uniform alt order angry:
         ease 1.5 alpha 0
+    pause 1.0
 
     python:
         flak_positions1 = [
@@ -503,11 +502,11 @@ label atkanim_sunrider_rocket:
     show ava uniform alt order angry:
         xzoom -1 xpos -0.2
         ease 0.3 xpos 0.15
-    pause 0.75
+    pause 1.0
     show ava uniform alt order angry:
         ease 1.5 alpha 0
 
-    pause 0.25
+    pause 0.5
 
     play sound "sound/missilelaunch.ogg"
 
@@ -518,7 +517,7 @@ label atkanim_sunrider_rocket:
 
     show sunrider_rockettrail with sunriderrocketwipe
     hide sunrider_rockettrail with dissolve
-    pause 0.1
+    pause 0.5
 
     return
 
@@ -1165,7 +1164,6 @@ label atkanim_sunrider_vanguard:
 
     scene black
 
-    play music "Music/March_of_Immortals.ogg" noloop fadeout 1.5
     play sound "sound/Sword Shing 2.ogg"
     play kayvoice "sound/Voice/Shields/Cpt Shields 1.ogg"
 
@@ -1180,7 +1178,7 @@ label atkanim_sunrider_vanguard:
     pause 0.4
     play sound1 "sound/drum.ogg"
 
-    pause 1.0
+    pause 1.5
 
     play kayvoice "sound/Voice/Shields/Cpt Shields 13.ogg"
 
@@ -1307,6 +1305,7 @@ label die_sunrider:
     scene badend
 
     return
+
 
 ########################################################################PACT MISSILE FRIGATE ATTACK ANIMATIONS
 
@@ -1958,31 +1957,29 @@ label atkanim_blackjack_assault: ########################BLACK JACK ATTACK ANIMA
     play sound "sound/mech1.ogg"
     show blackjack assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound1 "sound/machinegun.ogg"
 
     show blackjack_assaultflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.1
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.15
-            repeat (4)
+            pause 0.025
+            repeat (20)
 
     show blackjack_assaultflash2:
         alpha 0
-        pause 0.30
         block:
             ease 0.025 alpha 1
-            pause 0.1
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.15
-            repeat (4)
+            pause 0.025
+            repeat (20)
 
-    pause 1.5
+    pause 2.0
 
     return
 
@@ -2015,10 +2012,12 @@ label atkanim_blackjack_laser:
     show asaga plugsuit point happy:
         ease 1.5 alpha 0
 
-    pause 0.8
+    pause 1.0
 
     play sound "sound/mech1.ogg"
     show blackjack laser with dissolve
+    
+    pause 1.0
 
     play sound1 "sound/Laser 1.ogg"
 
@@ -2028,28 +2027,25 @@ label atkanim_blackjack_laser:
         pause 0.4
         ease 0.1 alpha 0
 
-    pause 0.1
     show blackjack_laser2:
         xpos 0.5 ypos 0.5 alpha 0
         ease 0.1 alpha 1
         pause 0.4
         ease 0.1 alpha 0
 
-    pause 0.1
     show blackjack_laser3:
         xpos 0.5 ypos 0.5 alpha 0
         ease 0.1 alpha 1
         pause 0.4
         ease 0.1 alpha 0
 
-    pause 0.1
     show blackjack_laser4:
         xpos 0.5 ypos 0.5 alpha 0
         ease 0.1 alpha 1
         pause 0.4
         ease 0.1 alpha 0
 
-    pause 0.8
+    pause 1.0
 
     return
 
@@ -4453,30 +4449,28 @@ label atkanim_piratebomber_assault:
     play sound1 "sound/MechHeavy.ogg"
     show piratebomber assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound "sound/machinegun.ogg"
     show piratebomber_assaultflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.06
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.12
-            repeat (5)
+            pause 0.025
+            repeat (20)
 
     show piratebomber_assaultflash2:
         alpha 0
-        pause 0.30
         block:
             ease 0.025 alpha 1
-            pause 0.06
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.12
-            repeat (5)
+            pause 0.025
+            repeat (20)
 
-    pause 1.5
+    pause 2.0
 
     return
 
@@ -4752,7 +4746,7 @@ label hitanim_piratebomber_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -4762,7 +4756,7 @@ label hitanim_piratebomber_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -5048,7 +5042,7 @@ label atkanim_pactcruiser_kinetic: ################################# PACT CRUISE
     show pactcruiser_side:
         xpos 0.5 ypos 0.5
 
-    pause 0.2
+    pause 0.5
 
     show layer master at shake1
     show pactcruiser_kineticflash1:
@@ -5056,44 +5050,20 @@ label atkanim_pactcruiser_kinetic: ################################# PACT CRUISE
         ease 0.05 alpha 1
         ease 0.05 alpha 0
     show pactcruiser_kineticbullet1:
-        xpos 801 ypos 437
-        linear 0.15 xpos -200 ypos 350
+        xpos 805 ypos 430
+        linear 0.15 xpos -200 ypos 356
     play sound1 'sound/explosion1.ogg'
-    pause 0.05
+    pause 0.5
 
     show layer master at shake1
-    show pactcruiser_kineticflash1:
+    show pactcruiser_kineticflash2:
         alpha 0
         ease 0.05 alpha 1
         ease 0.05 alpha 0
     show pactcruiser_kineticbullet2:
-        xpos 808 ypos 425
-        linear 0.15 xpos -200 ypos 362
+        xpos 925 ypos 415
+        linear 0.15 xpos -200 ypos 295
     play sound2 'sound/explosion1.ogg'
-    pause 0.2
-
-    show layer master at shake1
-    show pactcruiser_kineticflash2:
-        alpha 0
-        ease 0.05 alpha 1
-        ease 0.05 alpha 0
-    show pactcruiser_kineticbullet3:
-        xpos 923 ypos 419
-        linear 0.15 xpos -200 ypos 300
-    play sound1 'sound/explosion1.ogg'
-    pause 0.05
-
-    show layer master at shake1
-    show pactcruiser_kineticflash2:
-        alpha 0
-        ease 0.05 alpha 1
-        ease 0.05 alpha 0
-    show layer master at shake1
-    show pactcruiser_kineticbullet4:
-        xpos 927 ypos 410
-        linear 0.15 xpos -200 ypos 290
-    play sound2 'sound/explosion1.ogg'
-    pause 0.05
 
     pause 0.5
     return
@@ -5496,7 +5466,7 @@ label hitanim_pactcruiser_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -5505,7 +5475,7 @@ label hitanim_pactcruiser_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -5796,7 +5766,7 @@ label atkanim_pactbattleship_kinetic: ################################# PACT BAT
     show pactbattleship_side:
         xpos 0.5 ypos 0.5
 
-    pause 0.2
+    pause 1.0
 
     show layer master at shake1
     show pactbattleship_kineticflash1:
@@ -5807,7 +5777,7 @@ label atkanim_pactbattleship_kinetic: ################################# PACT BAT
         xpos 360 ypos 440
         linear 0.15 xpos -500 ypos 360
     play sound1 'sound/explosion1.ogg'
-    pause 0.1
+    pause 0.25
 
     show layer master at shake1
     show pactbattleship_kineticflash2:
@@ -5818,7 +5788,7 @@ label atkanim_pactbattleship_kinetic: ################################# PACT BAT
         xpos 460 ypos 430
         linear 0.15 xpos -400 ypos 340
     play sound2 'sound/explosion1.ogg'
-    pause 0.1
+    pause 0.25
 
     show layer master at shake1
     show pactbattleship_kineticflash3:
@@ -5832,7 +5802,7 @@ label atkanim_pactbattleship_kinetic: ################################# PACT BAT
     play sound3 'sound/explosion1.ogg'
     pause 0.1
 
-    pause 0.5
+    pause 1.0
     return
 
 label atkanim_pactbattleship_assault:
@@ -6309,7 +6279,7 @@ label hitanim_pactbattleship_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -6318,7 +6288,7 @@ label hitanim_pactbattleship_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -6624,7 +6594,6 @@ label atkanim_ryuviancruiser_kinetic: ################################# RYUVIAN 
         xpos 580 ypos 354
         linear 0.15 xpos -400 ypos 350
     play sound1 'sound/explosion1.ogg'
-    pause 0.05
 
     show layer master at shake1
     show ryuviancruiser_kineticflash_back1 behind ryuviancruiser_side:
@@ -6632,28 +6601,6 @@ label atkanim_ryuviancruiser_kinetic: ################################# RYUVIAN 
         ease 0.05 alpha 1
         ease 0.05 alpha 0
     show ryuviancruiser_kineticround2 behind ryuviancruiser_side:
-        xpos 580 ypos 329
-        linear 0.15 xpos -400 ypos 325
-    play sound2 'sound/explosion1.ogg'
-    pause 0.2
-
-    show layer master at shake1
-    show ryuviancruiser_kineticflash2:
-        alpha 0
-        ease 0.05 alpha 1
-        ease 0.05 alpha 0
-    show ryuviancruiser_kineticround3:
-        xpos 580 ypos 354
-        linear 0.15 xpos -400 ypos 350
-    play sound1 'sound/explosion1.ogg'
-    pause 0.05
-
-    show layer master at shake1
-    show ryuviancruiser_kineticflash_back2 behind ryuviancruiser_side:
-        alpha 0
-        ease 0.05 alpha 1
-        ease 0.05 alpha 0
-    show ryuviancruiser_kineticround4 behind ryuviancruiser_side:
         xpos 580 ypos 329
         linear 0.15 xpos -400 ypos 325
     play sound2 'sound/explosion1.ogg'
@@ -6968,7 +6915,7 @@ label hitanim_ryuviancruiser_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -6977,7 +6924,7 @@ label hitanim_ryuviancruiser_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -7434,21 +7381,20 @@ label atkanim_havoc_assault:
 
     show havoc assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
-    play sound2 "sound/machinegun.ogg"
+    play sound2 "sound/gatlinggun.ogg"
 
     show havoc_assaultflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.03
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.06
-            repeat (15)
+            pause 0.025
+            repeat (30)
 
-    pause 1.5
+    pause 3.0
 
     return
 
@@ -7767,7 +7713,7 @@ label hitanim_havoc_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -7777,7 +7723,7 @@ label hitanim_havoc_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -8141,7 +8087,7 @@ label atkanim_piratedestroyer_kinetic: ################################# PIRATE 
 
     show piratedestroyer:
 
-    pause 0.2
+    pause 0.5
 
     show layer master at shake1
     show piratedestroyer_kineticflash:
@@ -8149,28 +8095,15 @@ label atkanim_piratedestroyer_kinetic: ################################# PIRATE 
         ease 0.1 alpha 1
         ease 0.1 alpha 0
     show piratedestroyer_kineticround1:
-        xpos 1052 ypos 335
-        linear 0.15 xpos -400 ypos 100
+        xpos 1052 ypos 330
+        linear 0.15 xpos -400 ypos 98
     play sound1 'sound/explosion1.ogg'
-    pause 0.06
     show piratedestroyer_kineticround2:
-        xpos 1060 ypos 315
-        linear 0.15 xpos -392 ypos 85
-    pause 0.4
-
-    show layer master at shake1
-    show piratedestroyer_kineticflash:
-        alpha 0
-        ease 0.1 alpha 1
-        ease 0.1 alpha 0
+        xpos 1056 ypos 325
+        linear 0.15 xpos -396 ypos 92
     show piratedestroyer_kineticround3:
-        xpos 1052 ypos 335
-        linear 0.15 xpos -400 ypos 100
-    play sound2 'sound/explosion1.ogg'
-    pause 0.06
-    show piratedestroyer_kineticround4:
-        xpos 1060 ypos 315
-        linear 0.15 xpos -392 ypos 85
+        xpos 1060 ypos 320
+        linear 0.15 xpos -392 ypos 86
 
     pause 0.5
     return
@@ -8463,7 +8396,7 @@ label hitanim_piratedestroyer_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -8472,7 +8405,7 @@ label hitanim_piratedestroyer_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -8800,8 +8733,7 @@ label atkanim_pactstation_kinetic:
     show pactstation_kineticround2:
         xpos 750 ypos 460
         linear 0.15 xpos -400 ypos 400
-
-    pause 0.1
+    pause 0.25
 
     play sound2 "sound/railgun.ogg"
     show layer master at shake1
@@ -8815,7 +8747,7 @@ label atkanim_pactstation_kinetic:
     show pactstation_kineticround4:
         xpos 910 ypos 420
         linear 0.15 xpos -400 ypos 360
-    pause 0.1
+    pause 0.25
 
     play sound3 "sound/railgun.ogg"
     show layer master at shake1
@@ -9100,7 +9032,7 @@ label hitanim_pactstation_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -9109,7 +9041,7 @@ label hitanim_pactstation_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -9460,31 +9392,29 @@ label atkanim_pactmook_assault:
 
     show pactmook assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound "sound/machinegun.ogg"
 
     show pactmook_muzzleflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.06
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.12
-            repeat (5)
+            pause 0.025
+            repeat (20)
 
     show pactmook_muzzleflash2:
         alpha 0
-        pause 0.30
         block:
             ease 0.025 alpha 1
-            pause 0.06
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.12
-            repeat (5)
+            pause 0.025
+            repeat (20)
 
-    pause 1.5
+    pause 2.0
 
     return
 
@@ -9787,7 +9717,7 @@ label hitanim_pactmook_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -9797,7 +9727,7 @@ label hitanim_pactmook_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -10389,7 +10319,7 @@ label hitanim_seraphimenemy_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -10399,7 +10329,7 @@ label hitanim_seraphimenemy_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -10751,29 +10681,27 @@ label atkanim_pirategrunt_assault:
 
     show pirategrunt assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound "sound/machinegun.ogg"
 
     show pirategrunt_muzzleflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.06
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.12
-            repeat (5)
+            pause 0.025
+            repeat (20)
 
     show pirategrunt_muzzleflash2:
         alpha 0
-        pause 0.30
         block:
             ease 0.025 alpha 1
-            pause 0.06
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.12
-            repeat (5)
+            pause 0.025
+            repeat (20)
 
     pause 1.5
 
@@ -11077,7 +11005,7 @@ label hitanim_pirategrunt_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -11087,7 +11015,7 @@ label hitanim_pirategrunt_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -11852,7 +11780,7 @@ label hitanim_piratebase_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage < 1200:
+    if sunrider.weapons[3].damage < 2500:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -11861,7 +11789,7 @@ label hitanim_piratebase_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage >= 1200:
+    if sunrider.weapons[3].damage >= 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -12156,13 +12084,12 @@ label atkanim_phoenixboaster_assault: ##########################################
 
     show phoenixboaster assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound "sound/machinegun.ogg"
 
     show phoenixboaster_assaultflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
             pause 0.06
@@ -12172,7 +12099,6 @@ label atkanim_phoenixboaster_assault: ##########################################
 
     show phoenixboaster_assaultflash2:
         alpha 0
-        pause 0.25
         block:
             ease 0.025 alpha 1
             pause 0.06
@@ -12182,7 +12108,6 @@ label atkanim_phoenixboaster_assault: ##########################################
 
     show phoenixboaster_assaultflash3:
         alpha 0
-        pause 0.35
         block:
             ease 0.025 alpha 1
             pause 0.06
@@ -12192,7 +12117,6 @@ label atkanim_phoenixboaster_assault: ##########################################
 
     show phoenixboaster_assaultflash4:
         alpha 0
-        pause 0.45
         block:
             ease 0.025 alpha 1
             pause 0.06
@@ -12516,7 +12440,7 @@ label hitanim_phoenixboaster_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -12526,7 +12450,7 @@ label hitanim_phoenixboaster_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -13234,7 +13158,7 @@ label hitanim_pactbomber_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -13244,7 +13168,7 @@ label hitanim_pactbomber_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -14653,31 +14577,29 @@ label atkanim_phoenix_assault: ########################PHOENIX ATTACK ANIMATIONS
     play sound "sound/mech1.ogg"
     show phoenix assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound1 "sound/machinegun.ogg"
 
     show phoenix_assaultflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.1
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.15
-            repeat (4)
+            pause 0.025
+            repeat (20)
 
     show phoenix_assaultflash2:
         alpha 0
-        pause 0.30
         block:
             ease 0.025 alpha 1
-            pause 0.1
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.15
-            repeat (4)
+            pause 0.025
+            repeat (20)
 
-    pause 1.5
+    pause 2.0
 
     return
 
@@ -15689,7 +15611,7 @@ label hitanim_phoenixenemy_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -15699,7 +15621,7 @@ label hitanim_phoenixenemy_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -16602,7 +16524,7 @@ label hitlegion_bianca:
 
     return
 
-############################################ALLIANCECRUISER ATTACK ANIMATIONS START
+############################################ALLIANCE CRUISER ATTACK ANIMATIONS START
 label atkanim_alliancecruiser_kinetic:
 
     if config.skipping:
@@ -16623,7 +16545,7 @@ label atkanim_alliancecruiser_kinetic:
     if Random == 3:
         play othvoice "sound/Voice/AllianceCruiser/Open Fire.ogg"
 
-    pause 0.75
+    pause 2.0
 
     show layer master at shake1
     show alliancecruiser_sidekineticrear:
@@ -16634,7 +16556,7 @@ label atkanim_alliancecruiser_kinetic:
         xpos 1091 ypos 390
         linear 0.15 xpos 2300 ypos 270
     play sound1 'sound/railgun.ogg'
-    pause 0.05
+    pause 0.5
 
     show layer master at shake1
     show alliancecruiser_sidekineticfront:
@@ -16645,31 +16567,8 @@ label atkanim_alliancecruiser_kinetic:
         xpos 1202 ypos 408
         linear 0.15 xpos 2300 ypos 310
     play sound2 'sound/railgun.ogg'
-    pause 0.2
 
-    show layer master at shake1
-    show alliancecruiser_sidekineticrear:
-        alpha 0
-        ease 0.1 alpha 1.0
-        ease 0.1 alpha 0.0
-    show alliancecruiser_kineticround3:
-        xpos 1091 ypos 390
-        linear 0.15 xpos 2300 ypos 270
-    play sound1 'sound/railgun.ogg'
-    pause 0.05
-
-    show layer master at shake1
-    show alliancecruiser_sidekineticfront:
-        alpha 0
-        ease 0.1 alpha 1.0
-        ease 0.1 alpha 0.0
-    show layer master at shake1
-    show alliancecruiser_kineticround4:
-        xpos 1202 ypos 408
-        linear 0.15 xpos 2300 ypos 310
-    play sound2 'sound/railgun.ogg'
-
-    pause 0.5
+    pause 0.75
     return
 
 label atkanim_alliancecruiser_laser:
@@ -16690,7 +16589,7 @@ label atkanim_alliancecruiser_laser:
     if Random == 3:
         play othvoice "sound/Voice/AllianceCruiser/Open Fire.ogg"
 
-    pause 0.75
+    pause 2.0
     
     play sound2 'sound/Laser 1.ogg'
 
@@ -16700,7 +16599,7 @@ label atkanim_alliancecruiser_laser:
 
     hide alliancecruiser_side_laserfront with laserwipe
 
-    pause 0.5
+    pause 1.0
     return
 
 label atkanim_alliancecruiser_missile:
@@ -16723,7 +16622,7 @@ label atkanim_alliancecruiser_missile:
     if Random == 3:
         play othvoice "sound/Voice/AllianceCruiser/Open Fire.ogg"
 
-    pause 0.75
+    pause 2.0
         
     play sound2 'sound/missilelaunch.ogg'
     show alliancecruiser_missile1:
@@ -16735,7 +16634,7 @@ label atkanim_alliancecruiser_missile:
 
     show alliancecruiser_missile_trail with sunridermissilewipe
     hide alliancecruiser_missile_trail with dissolve
-    pause 0.5
+    pause 1.0
 
     return
 
@@ -16757,7 +16656,7 @@ label atkanim_alliancecruiser_assault:
     if Random == 3:
         play othvoice "sound/Voice/AllianceCruiser/Open Fire.ogg"
 
-    pause 0.75
+    pause 2.0
 
     python:
         flak_positions1 = [
@@ -17463,7 +17362,7 @@ label atkanim_alliancebattleship_kinetic:
     if Random == 3:
         play othvoice "sound/Voice/AllianceBattleship/attack3.ogg"
 
-    pause 0.75
+    pause 1.25
 
     show layer master at shake1
     show alliancebattleship_kineticflash1:
@@ -17471,10 +17370,10 @@ label atkanim_alliancebattleship_kinetic:
         ease 0.1 alpha 1.0
         ease 0.1 alpha 0.0
     show alliancebattleship_kineticround1:
-        xpos 1040 ypos 503
-        linear 0.15 xpos 2300 ypos 510
-    play sound1 'sound/shotgun.ogg'
-    pause 0.1
+        xpos 1100 ypos 504
+        linear 0.15 xpos 2300 ypos 515
+    play sound1 'sound/railgun.ogg'
+    pause 0.25
 
     show layer master at shake1
     show alliancebattleship_kineticflash2:
@@ -17482,10 +17381,10 @@ label atkanim_alliancebattleship_kinetic:
         ease 0.1 alpha 1.0
         ease 0.1 alpha 0.0
     show alliancebattleship_kineticround2:
-        xpos 832 ypos 495
+        xpos 880 ypos 495
         linear 0.15 xpos 2300 ypos 505
-    play sound2 'sound/shotgun.ogg'
-    pause 0.1
+    play sound2 'sound/railgun.ogg'
+    pause 0.25
 
     show layer master at shake1
     show alliancebattleship_kineticflash3:
@@ -17495,7 +17394,7 @@ label atkanim_alliancebattleship_kinetic:
     show alliancebattleship_kineticround3:
         xpos 660 ypos 486
         linear 0.15 xpos 2300 ypos 495
-    play sound3 'sound/shotgun.ogg'
+    play sound3 'sound/railgun.ogg'
     
     pause 1.0
 
@@ -17519,7 +17418,7 @@ label atkanim_alliancebattleship_laser:
     if Random == 3:
         play othvoice "sound/Voice/AllianceBattleship/attack3.ogg"
 
-    pause 0.75
+    pause 1.25
     
     play sound2 'sound/Laser 1.ogg'
 
@@ -17527,7 +17426,7 @@ label atkanim_alliancebattleship_laser:
 
     hide alliancebattleship_laser with laserwipe
 
-    pause 0.5
+    pause 1.0
     return
 
 label atkanim_alliancebattleship_missile:
@@ -17550,9 +17449,9 @@ label atkanim_alliancebattleship_missile:
     if Random == 3:
         play othvoice "sound/Voice/AllianceBattleship/attack3.ogg"
 
-    pause 0.75
+    pause 1.0
         
-    play sound2 'sound/missile.ogg'
+    play sound2 'sound/missilelaunch.ogg'
     show alliancebattleship_missileround1:
         alpha 0
         pause 0.29
@@ -17576,7 +17475,7 @@ label atkanim_alliancebattleship_missile:
 
     show alliancebattleship_missiletrail with sunridermissilewipe
     hide alliancebattleship_missiletrail with dissolve
-    pause 0.5
+    pause 1.0
 
     return
 
@@ -17598,7 +17497,7 @@ label atkanim_alliancebattleship_assault:
     if Random == 3:
         play othvoice "sound/Voice/AllianceBattleship/attack3.ogg"
 
-    pause 0.75
+    pause 1.0
 
     python:
         flak_positions1 = [
@@ -17724,9 +17623,13 @@ label atkanim_alliancebattleship_kinetic2:
     if Random == 3:
         play othvoice "sound/Voice/AllianceBattleship/attack3.ogg"
 
-    pause 0.75
+    pause 1.0
     
-    play sound3 "sound/cannon.ogg"
+    play sound1 "sound/chargeup.ogg"
+    
+    pause 3.25
+    
+    play sound2 "sound/cannon.ogg"
     
     show layer master at shake1(pausetime=0.1)
 
@@ -17744,7 +17647,7 @@ label atkanim_alliancebattleship_kinetic2:
         pause 0.2
         ease 0.1 alpha 0
 
-    pause 0.8
+    pause 2.0
 
     return
     
@@ -18714,7 +18617,7 @@ label hitanim_pactcarrier_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -18723,7 +18626,7 @@ label hitanim_pactcarrier_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -19040,31 +18943,29 @@ label atkanim_paladin_assault: ########################PALADIN ATTACK ANIMATIONS
     play sound "sound/mech1.ogg"
     show paladin assault with dissolve
 
-    pause 0.3
+    pause 0.5
 
     play sound1 "sound/machinegun.ogg"
 
     show paladin_assaultflash1:
         alpha 0
-        pause 0.15
         block:
             ease 0.025 alpha 1
-            pause 0.1
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.15
-            repeat (4)
+            pause 0.025
+            repeat (20)
 
     show paladin_assaultflash2:
         alpha 0
-        pause 0.30
         block:
             ease 0.025 alpha 1
-            pause 0.1
+            pause 0.025
             ease 0.025 alpha 0
-            pause 0.15
-            repeat (4)
+            pause 0.025
+            repeat (20)
 
-    pause 1.5
+    pause 2.0
 
     return
 
@@ -19174,34 +19075,31 @@ label atkanim_paladin_kinetic:
     play sound "sound/mech1.ogg"
     show paladin kinetic with dissolve
 
-    pause 0.5
+    pause 1.0
 
-    play sound "sound/shotgun.ogg"
+    play sound1 "sound/shotgun.ogg"
     show layer master at shake2
     show paladin_kineticflash1:
         xpos 0.5 ypos 0.5 alpha 1.0
         ease 0.3 alpha 0.0 zoom 2.5 ypos 0.8
-
-    pause 0.1
     play sound1 "sound/shotgun.ogg"
+    show layer master at shake2
+    show paladin_kineticflash4:
+        xpos 0.5 ypos 0.5 alpha 1.0
+        ease 0.3 alpha 0.0 zoom 2.5 ypos 0.8
+    
+    pause 0.1
+    
+    play sound2 "sound/shotgun.ogg"
     show layer master at shake2
     show paladin_kineticflash2:
         xpos 0.5 ypos 0.5 alpha 1.0
         ease 0.3 alpha 0.0 zoom 2.5 ypos 1.0
-    pause 0.1
-    
     play sound2 "sound/shotgun.ogg"
     show layer master at shake2
     show paladin_kineticflash3:
         xpos 0.5 ypos 0.5 alpha 1.0
         ease 0.3 alpha 0.0 zoom 2.5 ypos 1.0
-    pause 0.1
-    
-    play sound3 "sound/shotgun.ogg"
-    show layer master at shake2
-    show paladin_kineticflash4:
-        xpos 0.5 ypos 0.5 alpha 1.0
-        ease 0.3 alpha 0.0 zoom 2.5 ypos 0.8
 
     pause 1.0
 
@@ -20485,10 +20383,10 @@ label atkanim_nightmare_pulse:
         alpha 0 xpos 533 ypos 345
         block:
             ease 0.025 alpha 1
-            pause 0.025
+            pause 0.05
             ease 0.025 alpha 0
-            pause 0.025
-            repeat (17)
+            pause 0.05
+            repeat (20)
             
     python:
         flak_positions1 = [
@@ -20521,6 +20419,22 @@ label atkanim_nightmare_pulse:
     play sound "sound/pulse2.ogg"
     pause 0.1
     play sound1 "sound/pulse2.ogg"
+    pause 0.1
+    play sound2 "sound/pulse2.ogg"
+    pause 0.1
+    play sound3 "sound/pulse2.ogg"
+    pause 0.1
+    play sound4 "sound/pulse2.ogg"
+    pause 0.1
+    play sound5 "sound/pulse2.ogg"
+    pause 0.1
+    play sound6 "sound/pulse2.ogg"
+    pause 0.1
+    play sound7 "sound/pulse2.ogg"
+    pause 0.1
+    play sound8 "sound/pulse2.ogg"
+    pause 0.1
+    play sound9 "sound/pulse2.ogg"
     pause 0.1
     
     $ Flak1.stop()
@@ -20836,7 +20750,7 @@ label hitanim_nightmare_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -20846,7 +20760,7 @@ label hitanim_nightmare_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -21398,7 +21312,7 @@ label hitanim_pactsupport_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -21408,7 +21322,7 @@ label hitanim_pactsupport_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -22111,7 +22025,7 @@ label hitanim_pactelite_rocket: #(damage):
         linear 0.4 xpos 1010 ypos 448
         alpha 0
 
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         show layer master at shake2(pausetime=0.4,repeats=8)
         play sound "sound/explosion4.ogg"
         show pactmissilefrigate_die3:
@@ -22121,7 +22035,7 @@ label hitanim_pactelite_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
 
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -22412,7 +22326,7 @@ label atkanim_pactassaultcarrier_kinetic: ################################# PACT
     show pactassaultcarrier_side:
         xpos 0.5 ypos 0.5
 
-    pause 0.2
+    pause 1.0
 
     show layer master at shake1
     show pactassaultcarrier_kineticflash1:
@@ -22423,8 +22337,8 @@ label atkanim_pactassaultcarrier_kinetic: ################################# PACT
         xpos 264 ypos 525
         linear 0.15 xpos -300 ypos 540
     play sound1 'sound/explosion1.ogg'
-    pause 0.1
-
+    pause 0.25
+    
     show layer master at shake1
     show pactassaultcarrier_kineticflash2:
         alpha 0
@@ -22434,31 +22348,31 @@ label atkanim_pactassaultcarrier_kinetic: ################################# PACT
         xpos 391 ypos 508
         linear 0.15 xpos -300 ypos 520
     play sound2 'sound/explosion1.ogg'
-    pause 0.2
+    
+    pause 0.5
 
     show layer master at shake1
     show pactassaultcarrier_kineticflash3:
         alpha 0
         ease 0.1 alpha 1
         ease 0.1 alpha 0
-    show layer master at shake1
     show pactassaultcarrier_kineticbullet3:
         xpos 807 ypos 430
         linear 0.15 xpos -300 ypos 400
     play sound3 'sound/explosion1.ogg'
-    pause 0.1
+    pause 0.25
     
     show layer master at shake1
     show pactassaultcarrier_kineticflash4:
         alpha 0
         ease 0.1 alpha 1
         ease 0.1 alpha 0
-    show layer master at shake1
     show pactassaultcarrier_kineticbullet4:
         xpos 920 ypos 418
         linear 0.15 xpos -300 ypos 350
     play sound4 'sound/explosion1.ogg'
-    pause 0.5
+    
+    pause 1.0
     return
 
 label atkanim_pactassaultcarrier_assault:
@@ -22916,7 +22830,7 @@ label hitanim_pactassaultcarrier_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -22925,7 +22839,7 @@ label hitanim_pactassaultcarrier_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -23220,7 +23134,7 @@ label atkanim_legion_kinetic: ################################# LEGION
     show legion_side:
         xpos 0.5 ypos 0.5
 
-    pause 0.2
+    pause 1.0
 
     show layer master at shake1
     show legion_kineticflash1:
@@ -23234,7 +23148,7 @@ label atkanim_legion_kinetic: ################################# LEGION
         xpos 865 ypos 625
         linear 0.15 xpos -300 ypos 625
     play sound 'sound/railgun.ogg'
-    pause 0.1
+    pause 0.25
     
     show layer master at shake1
     show legion_kineticflash2:
@@ -23248,7 +23162,7 @@ label atkanim_legion_kinetic: ################################# LEGION
         xpos 910 ypos 628
         linear 0.15 xpos -300 ypos 628
     play sound1 'sound/railgun.ogg'
-    pause 0.1
+    pause 0.25
 
     show layer master at shake1
     show legion_kineticflash3:
@@ -23262,7 +23176,7 @@ label atkanim_legion_kinetic: ################################# LEGION
         xpos 960 ypos 632
         linear 0.15 xpos -300 ypos 632
     play sound2 'sound/railgun.ogg'
-    pause 0.1
+    pause 0.25
     
     show layer master at shake1
     show legion_kineticflash4:
@@ -23276,7 +23190,7 @@ label atkanim_legion_kinetic: ################################# LEGION
         xpos 1000 ypos 635
         linear 0.15 xpos -300 ypos 635
     play sound3 'sound/railgun.ogg'
-    pause 0.1
+    pause 0.25
 
     show layer master at shake1
     show legion_kineticflash5:
@@ -23291,7 +23205,7 @@ label atkanim_legion_kinetic: ################################# LEGION
         linear 0.15 xpos -300 ypos 638
     play sound4 'sound/railgun.ogg'
     
-    pause 0.5
+    pause 1.0
     return
 
 label atkanim_legion_laser:
@@ -23602,7 +23516,7 @@ label hitanim_legion_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -23611,7 +23525,7 @@ label hitanim_legion_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
@@ -24278,7 +24192,7 @@ label hitanim_pirateironhog_rocket: #(damage):
 
 
     show layer master at shake2(pausetime=1,repeats=8)
-    if sunrider.weapons[3].damage == 800:
+    if sunrider.weapons[3].damage == 1250:
         play sound1 "sound/explosion5.ogg"
         show pactmissilefrigate_rocketexplode:
             xpos 0.5 ypos 0.5 alpha 0
@@ -24287,7 +24201,7 @@ label hitanim_pirateironhog_rocket: #(damage):
             pause 0.5
             ease 0.5 alpha 0
         
-    if sunrider.weapons[3].damage == 1200:
+    if sunrider.weapons[3].damage == 2500:
         play sound1 "sound/quantumtorpedo.ogg"
         show quantumtorpedo:
             alpha 0 zoom 0
