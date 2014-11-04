@@ -12,23 +12,19 @@ init 2 python:
     class Sunrider(Battleship): # your ship!
         def __init__(self):
             super(Sunrider, self).__init__() # proper inheritance requires super()
-            self.stype = 'Cruiser'
+            self.stype = 'Assault Carrier'
             self.name = 'Sunrider'
             self.animation_name = 'sunrider'
             self.faction = 'Player'
-            self.max_hp = 1500
+            self.max_hp = 7500
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 240
             self.en = self.max_en
-            self.max_missiles = 1
+            self.max_missiles = 5
             self.max_rockets = 2
             self.repair_drones = None
-            
-            #custom upgrades
+            self.upgrades['max_hp'] = ['Hull Plating',1,500,100,1.75]
             self.upgrades['base_armor'] = ['Armor',1,5,500,2]
-            self.upgrades['max_missiles'] = ['Missile Storage',1,1,500,2]
-            
-            
             self.missiles = self.max_missiles
             self.rockets = 0
             self.evasion = -25  # cruisers are easy to hit
@@ -36,20 +32,21 @@ init 2 python:
             self.portrait = 'Battle UI/ava_portrait.png'
             self.flak = 40
             self.flak_range = 2
-            self.move_cost = 30
+            self.move_cost = 40
+            self.hate = 12500
             self.shield_generation = 0
             self.shields = self.shield_generation
             self.shield_range = 0
-            self.base_armor = 15
+            self.base_armor = 40
             self.armor = self.base_armor
             self.test = 'test1234'
             self.test2 = 'test2'
-
+            
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_sunrider.png'
             self.icon = 'Menu/upgrade_sunrider_button.png'
             self.hovericon = 'Menu/upgrade_sunrider_button_hover.png'
-
+            
             ####################VOICES
             self.voice_channel = "avavoice"
             self.selection_voice = ['Ava/Ava Selection 1.ogg','Ava/Ava Selection 2.ogg','Ava/Ava Selection 3.ogg','Ava/Ava Selection 4.ogg','Ava/Ava Selection 5.ogg','Ava/Ava Selection 6.ogg','Ava/Ava Selection 7.ogg']
@@ -66,10 +63,11 @@ init 2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-
+            
             if BM.mission != 'skirmishbattle':
-                set_cell_available(self.location) #tell the BM that the old cell is now free again
-                destroyed_ships.append(self)
+                a = self.location[0]-1  #make the next line of code a little shorter
+                b = self.location[1]-1
+                BM.grid[a][b] = False #tell the BM that the old cell is now free again
                 player_ships.remove(self)
                 BM.ships.remove(self)
                 renpy.jump('sunrider_destroyed')
@@ -83,16 +81,16 @@ init 2 python:
             self.name = 'Black Jack'
             self.animation_name = 'blackjack'
             self.faction = 'Player'
-            self.max_hp = 600
+            self.max_hp = 750
             self.hp = self.max_hp
             self.max_en = 100
             self.base_armor = 10
             self.armor = self.base_armor
             self.en = self.max_en
-            self.max_missiles = 1
+            self.max_missiles = 2
             self.missiles = self.max_missiles
-            self.move_cost = 20
-            self.hate = 100
+            self.move_cost = 15
+            self.hate = 50
             self.evasion = 25
             self.lbl = 'Battle UI/label_blackjack.png'  #this is the battle avatar
             self.portrait = 'Battle UI/asaga_portrait.png'
@@ -102,17 +100,15 @@ init 2 python:
                 'character':"Character/Asaga/asaga_plugsuit_point_happy.png"
                 }
             self.flak = 35
+            self.shield_generation = 10
+            self.shields = self.shield_generation
+            self.shield_range = 0
             
-            ##custom upgrade scaling
-            self.upgrades['melee_dmg'] = ['Melee Damage',1,0.05,100,1.4]
-            self.upgrades['melee_acc'] = ['Melee Accuracy',1,0.05,100,1.4]
-            self.upgrades['melee_cost'] = ['Melee Energy Cost',1,0.05,100,1.8]
-
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_blackjack.png'
             self.icon = 'Menu/upgrade_blackjack_button.png'
             self.hovericon = 'Menu/upgrade_blackjack_button_hover.png'
-
+            
             ####################VOICES
             self.voice_channel = "asavoice"
             self.attack_voice = ["sound/Voice/Asaga/Asaga Melee 1.ogg","sound/Voice/Asaga/Asaga Melee 2.ogg","sound/Voice/Asaga/Asaga Melee 3.ogg","sound/Voice/Asaga/Asaga Melee 4.ogg"]
@@ -131,11 +127,10 @@ init 2 python:
             self.stype = 'Ryder'
             self.name = 'Liberty'
             self.animation_name = 'liberty'
-            self.support = True
             self.faction = 'Player'
             self.max_hp = 475
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 120
             self.base_armor = 8
             self.armor = self.base_armor
             self.en = self.max_en
@@ -150,7 +145,7 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
-
+            
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_liberty.png'
             self.icon = 'Menu/upgrade_liberty_button.png'
@@ -174,7 +169,7 @@ init 2 python:
             self.name = 'Phoenix'
             self.animation_name = 'phoenix'
             self.faction = 'Player'
-            self.max_hp = 300
+            self.max_hp = 500
             self.hp = self.max_hp
             self.max_en = 100
             self.base_armor = 0
@@ -183,7 +178,7 @@ init 2 python:
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 10
-            self.hate = 100
+            self.hate = 50
             self.evasion = 50
             self.lbl = 'Battle UI/label_phoenix.png'  #this is the battle avatar
             self.portrait = 'Battle UI/icari_portrait.png'
@@ -193,9 +188,10 @@ init 2 python:
                 'character':"Character/Icari/icari_plugsuit_point_angry.png"
                 }
             self.flak = 20
-            self.upgrades['max_hp'] = ['Hull Plating',1,100,100,2.0]
-            self.upgrades['max_en'] = ['Energy Reactor',1,5,150,1.4]
-
+            self.shield_generation = 5
+            self.shields = self.shield_generation
+            self.shield_range = 0
+            
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_phoenix.png'
             self.icon = 'Menu/upgrade_phoenix_button.png'
@@ -219,14 +215,13 @@ init 2 python:
             self.name = 'Bianca'
             self.animation_name = 'bianca'
             self.faction = 'Player'
-            self.support = True
-            self.max_hp = 400
+            self.max_hp = 500
             self.hp = self.max_hp
             self.max_en = 100
             self.base_armor = 4
             self.armor = self.base_armor
             self.en = self.max_en
-            self.move_cost = 30
+            self.move_cost = 20
             self.evasion = 20
             self.lbl = 'Battle UI/label_bianca.png'  #this is the battle avatar
             self.portrait = 'Battle UI/claude_portrait.png'
@@ -237,7 +232,7 @@ init 2 python:
             self.shield_generation = 35
             self.shields = self.shield_generation
             self.shield_range = 1
-
+            
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_bianca.png'
             self.icon = 'Menu/upgrade_bianca_button.png'
@@ -260,27 +255,29 @@ init 2 python:
             self.name = 'Seraphim'
             self.animation_name = 'seraphim'
             self.faction = 'Player'
-            self.max_hp = 375
+            self.max_hp = 400
             self.hp = self.max_hp
             self.max_en = 100
-            self.base_armor = 4
+            self.base_armor = 5
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 0
             self.missiles = self.max_missiles
-            self.move_cost = 30
-            self.hate = 100
+            self.move_cost = 10
+            self.hate = 50
             self.evasion = 20
             self.lbl = 'Battle UI/label_seraphim.png'  #this is the battle avatar
             self.portrait = 'Battle UI/sola_portrait.png'
-            self.upgrades['kinetic_dmg'] = ['Kinetic Damage',1,0.075,100,1.4]
-            self.upgrades['kinetic_acc'] = ['Kinetic Accuracy',1,0.075,100,1.4]
-            self.upgrades['kinetic_cost'] = ['Kinetic Energy Cost',1,-0.05,100,1.8]
+            self.upgrades['kinetic_dmg'] = ['Kinetic Damage',1,0.05,100,1.25]
+            self.upgrades['kinetic_acc'] = ['Kinetic Accuracy',1,0.1,100,1.5]
             self.sprites = {
                 'standard':'gameplay/Animations/Seraphim/side.png',
                 }
             self.flak = 0
-
+            self.shield_generation = 5
+            self.shields = self.shield_generation
+            self.shield_range = 0
+            
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_seraphim.png'
             self.icon = 'Menu/upgrade_seraphim_button.png'
@@ -303,25 +300,29 @@ init 2 python:
             self.name = 'Paladin'
             self.animation_name = 'paladin'
             self.faction = 'Player'
-            self.max_hp = 900
+            self.max_hp = 1000
             self.hp = self.max_hp
             self.max_en = 100
-            self.base_armor = 15
+            self.base_armor = 20
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 2
             self.missiles = self.max_missiles
-            self.move_cost = 40
-            self.hate = 100
-            self.evasion = 10
+            self.move_cost = 30
+            self.hate = 50
+            self.evasion = 5
+            self.upgrades['base_armor'] = ['Armor',1,2,100,2]
             self.lbl = 'Battle UI/label_paladin.png'  #this is the battle avatar
             self.portrait = 'Battle UI/kryska_portrait.png'
             self.sprites = {
                 'standard':'gameplay/Animations/Paladin/side.png',
                 'character':"Character/Kryska/kryska_plugsuit_handonhip_focussmile.png"
                 }
-            self.flak = 18
-
+            self.flak = 20
+            self.shield_generation = 10
+            self.shields = self.shield_generation
+            self.shield_range = 0
+            
             ####################UPGRADE BACKGROUND AND ICONS
             self.upgrade_menu = 'Menu/upgrade_paladin.png'
             self.icon = 'Menu/upgrade_paladin_button.png'
@@ -345,23 +346,24 @@ init 2 python:
             self.animation_name = 'alliancecruiser'
             self.faction = 'Player'
             self.mercenary = True
-            self.max_hp = 1200
+            self.max_hp = 8000
             self.hp = self.max_hp
-            self.max_en = 100
-            self.base_armor = 12
+            self.max_en = 240
+            self.base_armor = 50
             self.armor = self.base_armor
             self.en = self.max_en
-            self.max_missiles = 1
+            self.max_missiles = 10
             self.missiles = self.max_missiles
-            self.move_cost = 30
-            self.hate = 100
+            self.move_cost = 40
+            self.hate = 10000
             self.evasion = 0
             self.lbl = 'Battle UI/label_alliancecruiser.png'  #this is the battle avatar
-            self.default_weapon_list = [AllianceCruiserLaser(),AllianceCruiserMissile(),AllianceCruiserKinetic(),AllianceCruiserAssault()]
+            self.default_weapon_list = [AllianceCruiserLaser(),AllianceCruiserKinetic(),AllianceCruiserMissile(),AllianceCruiserAssault()]
             self.portrait = None
-            self.flak = 30
+            self.flak = 60
             self.flak_range = 2
-            self.shield = 25
+            self.shield_generation = 50
+            self.shields = self.shield_generation
             self.shield_range = 1
 
             ####################VOICES
@@ -381,24 +383,25 @@ init 2 python:
             self.animation_name = 'alliancebattleship'
             self.faction = 'Player'
             self.mercenary = True
-            self.max_hp = 2100
+            self.max_hp = 12000
             self.hp = self.max_hp
-            self.max_en = 120
-            self.base_armor = 15
+            self.max_en = 320
+            self.base_armor = 80
             self.armor = self.base_armor
             self.en = self.max_en
-            self.max_missiles = 2
+            self.max_missiles = 10
             self.missiles = self.max_missiles
-            self.move_cost = 40
-            self.hate = 100
+            self.move_cost = 80
+            self.hate = 11250
             self.evasion = -25
             self.lbl = 'Battle UI/label_alliancebattleship.png'  #this is the battle avatar
-            self.default_weapon_list = [AllianceBattleshipLaser(),AllianceBattleshipMissile(),AllianceBattleshipKinetic(),AllianceBattleshipCannon(),AllianceBattleshipAssault()]
+            self.default_weapon_list = [AllianceBattleshipLaser(),AllianceBattleshipKinetic(),AllianceBattleshipMissile(),AllianceBattleshipCannon(),AllianceBattleshipAssault()]
             self.portrait = None
-            self.flak = 30
+            self.flak = 60
             self.flak_range = 2
-            self.shield = 25
-            self.shield_range = 1
+            self.shield_generation = 60
+            self.shields = self.shield_generation
+            self.shield_range = 2
 
             ####################VOICES
             self.voice_channel = "othvoice"
@@ -417,24 +420,25 @@ init 2 python:
             self.animation_name = 'unionfrigate'
             self.faction = 'Player'
             self.mercenary = True
-            self.max_hp = 475
+            self.max_hp = 2500
             self.hp = self.max_hp
-            self.max_en = 100
-            self.base_armor = 4
+            self.max_en = 150
+            self.base_armor = 20
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 20
-            self.hate = 100
-            self.evasion = 5
+            self.hate = 5000
+            self.evasion = 10
             self.blbl = 'Battle UI/label_unionfrigate.png'  #base(default) label
             self.lbl = self.blbl
             self.default_weapon_list = [UnionFrigateLaser(),ShdJam()]  #just this?
             self.portrait = None
             self.flak = 0
             self.flak_range = 0
-            self.shield = 0
+            self.shield_generation = 20
+            self.shields = self.shield_generation
             self.shield_range = 0
 
             ####################VOICES
@@ -455,16 +459,16 @@ init 2 python:
             self.name = 'Agamemnon'
             self.animation_name = 'agamemnon'
             self.faction = 'Player'
-            self.max_hp = 800
+            self.max_hp = 2500
             self.hp = self.max_hp
             self.max_en = 100
-            self.base_armor = 8
+            self.base_armor = 20
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 50
-            self.hate = 300
+            self.hate = 10000
             self.evasion = 0
             self.lbl = 'Battle UI/label_agamemnon.png'  #this is the battle avatar
             self.portrait = None
@@ -485,7 +489,9 @@ init 2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-            set_cell_available(self.location) #tell the BM that the old cell is now free again
+            a = self.location[0]-1  #make the next line of code a little shorter
+            b = self.location[1]-1
+            BM.grid[a][b] = False #tell the BM that the old cell is now free again
             BM.ships.remove(self)
             player_ships.remove(self)
             renpy.jump('sunrider_destroyed')
@@ -497,16 +503,16 @@ init 2 python:
             self.name = 'Freighter'
             self.animation_name = 'mochi'
             self.faction = 'Player'
-            self.max_hp = 1000
+            self.max_hp = 2500
             self.hp = self.max_hp
             self.max_en = 100
-            self.base_armor = 10
+            self.base_armor = 20
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 50
-            self.hate = 300
+            self.hate = 10000
             self.evasion = 0
             self.lbl = 'Battle UI/label_mochi.png'  #this is the battle avatar
             self.portrait = None
@@ -527,7 +533,9 @@ init 2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-            set_cell_available(self.location) #tell the BM that the old cell is now free again
+            a = self.location[0]-1  #make the next line of code a little shorter
+            b = self.location[1]-1
+            BM.grid[a][b] = False #tell the BM that the old cell is now free again
             BM.ships.remove(self)
             player_ships.remove(self)
             renpy.jump('sunrider_destroyed')
@@ -539,15 +547,15 @@ init 2 python:
             self.name = 'Unknown Hostile'
             self.animation_name = 'phoenixboaster'
             self.faction = 'PACT'
-            self.max_hp = 700
+            self.max_hp = 1000
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
             self.evasion = 30
             self.move_cost = 15
-            self.base_armor = 4
+            self.base_armor = 10
             self.money_reward = 300
-            self.armor = 4
+            self.armor = self.base_armor
             self.default_weapon_list = [PhoenixBoasterLaser(),PhoenixBoasterAssault()]
             self.blbl = 'Battle UI/label_phoenixboaster.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -556,6 +564,9 @@ init 2 python:
                 }
             self.flak = 20
             self.flak_range = 1
+            self.shield_generation = 20
+            self.shields = self.shield_generation
+            self.shield_range = 0
 
     class PactBomber(Battleship):
         def __init__(self):
@@ -564,13 +575,13 @@ init 2 python:
             self.name = 'PACT Bomber'
             self.animation_name = 'pactbomber'
             self.faction = 'PACT'
-            self.max_hp = 400
+            self.max_hp = 750
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
-            self.max_missiles = 2
+            self.max_missiles = 3
             self.max_rockets = 1
-            self.money_reward = 75
+            self.money_reward = 125
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.base_armor = 10  #Ryders are not typically armored
@@ -593,22 +604,25 @@ init 2 python:
             self.name = 'Ryuvian Ryder'
             self.animation_name = 'seraphimenemy'
             self.faction = 'PACT'
-            self.max_hp = 375
+            self.max_hp = 600
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
             self.max_missiles = 0
             self.max_rockets = 0
-            self.money_reward = 150
+            self.money_reward = 250
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.base_armor = 4  #Ryders are not typically armored
+            self.base_armor = 5  #Ryders are not typically armored
             self.armor = self.base_armor
             self.evasion = 20
-            self.move_cost = 30
+            self.move_cost = 10
+            self.shield_generation = 10
+            self.shields = self.shield_generation
+            self.shield_range = 0
             self.default_weapon_list = [SeraphimEnemyKinetic()]
-
-
+            
+            
             self.blbl = 'Battle UI/label_seraphimenemy.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
@@ -616,6 +630,9 @@ init 2 python:
                 }
             self.flak = 0
             self.flak_range = 0
+            self.shield_generation = 10
+            self.shields = self.shield_generation
+            self.shield_range = 0
 
     class Mochi(Battleship):
         def __init__(self):
@@ -624,16 +641,16 @@ init 2 python:
             self.name = 'Mochi'
             self.animation_name = 'mochi'
             self.faction = 'Player'
-            self.max_hp = 1200
+            self.max_hp = 2500
             self.hp = self.max_hp
             self.max_en = 100
-            self.base_armor = 15
+            self.base_armor = 20
             self.armor = self.base_armor
             self.en = self.max_en
             self.max_missiles = 0
             self.missiles = self.max_missiles
             self.move_cost = 200
-            self.hate = 100
+            self.hate = 10000
             self.evasion = -20
             self.lbl = 'Battle UI/label_mochi.png'  #this is the battle avatar
             self.portrait = None
@@ -654,11 +671,14 @@ init 2 python:
                     renpy.call_in_new_context('die_{}'.format(self.animation_name)) #show the death animation
                 except:
                     show_message('missing animation. "die_{}" does\'t seem to exist'.format(self.animation_name))
-            set_cell_available(self.location) #tell the BM that the old cell is now free again
+            a = self.location[0]-1  #make the next line of code a little shorter
+            b = self.location[1]-1
+            BM.grid[a][b] = False #tell the BM that the old cell is now free again
             BM.ships.remove(self)
             player_ships.remove(self)
-            BM.you_lose()
             renpy.jump('sunrider_destroyed')
+
+
 
 ### PACT ships ###
 
@@ -669,13 +689,15 @@ init 2 python:
             self.name = 'PACT Missile Frigate'
             self.animation_name = 'pactmissilefrigate'
             self.faction = 'PACT'
-            self.max_hp = 400
+            self.max_hp = 2000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 150
             self.en = self.max_en
             self.move_cost = 30
-            self.money_reward = 100
-            self.max_missiles = 6   #a lot of missiles, but it's all it has. things go wrong when it's out anywway
+            self.base_armor = 20
+            self.money_reward = 250
+            self.armor = self.base_armor
+            self.max_missiles = 20   #a lot of missiles, but it's all it has. things go wrong when it's out anywway
             self.missiles = self.max_missiles
             self.default_weapon_list = [PactFrigateMissile()]
             self.evasion = 0 # frigates get no penalty and no bonus to evasion
@@ -691,22 +713,22 @@ init 2 python:
             self.name = 'PACT Mook'
             self.animation_name = 'pactmook'
             self.faction = 'PACT'
-            self.max_hp = 300
+            self.max_hp = 500
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
             self.evasion = 25
             self.move_cost = 20
             self.base_armor = 0
-            self.money_reward = 50
-            self.armor = 0
+            self.money_reward = 100
+            self.armor = self.base_armor
             self.default_weapon_list = [PACTMookLaser(),PACTMookMissile(),PACTMookAssault()]
             self.blbl = 'Battle UI/label_pactmook.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.sprites = {
                 'standard':'gameplay/Animations/PACTMook/side.png'
                 }
-            self.flak = 10
+            self.flak = 20
             self.flak_range = 1
 
     class PhoenixEnemy(Battleship):
@@ -716,15 +738,15 @@ init 2 python:
             self.name = 'Phoenix'
             self.animation_name = 'phoenixenemy'
             self.faction = 'PACT'
-            self.max_hp = 300
+            self.max_hp = 800
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
             self.evasion = 50
             self.move_cost = 10
             self.base_armor = 0
-            self.money_reward = 200
-            self.armor = 0
+            self.money_reward = 500
+            self.armor = self.base_armor
             self.default_weapon_list = [PhoenixEnemyMelee(),PhoenixAssault()]
             self.blbl = 'Battle UI/label_phoenixenemy.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -735,6 +757,9 @@ init 2 python:
                 }
             self.flak = 20
             self.flak_range = 1
+            self.shield_generation = 10
+            self.shields = self.shield_generation
+            self.shield_range = 0
 
             self.voice_channel = "icavoice"
             self.attack_voice = ["sound/Voice/Icari/Icari Attacking Melee 1.ogg","sound/Voice/Icari/Icari Attacking Melee 2.ogg","sound/Voice/Icari/Icari Attacking Melee 3.ogg","sound/Voice/Icari/Icari Attacking Melee 1.ogg"]
@@ -746,19 +771,19 @@ init 2 python:
             self.name = 'Nightmare'
             self.animation_name = 'nightmare'
             self.faction = 'PACT' #for now...
-            self.max_hp = 3200
+            self.max_hp = 4000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 200
             self.en = self.max_en
             self.evasion = 50
             self.move_cost = 10
-            self.base_armor = 20
-            self.money_reward = 800
-            self.max_missiles = 2
+            self.base_armor = 40
+            self.money_reward = 2500
+            self.max_missiles = 10
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.armor = 30
+            self.armor = self.base_armor
             self.default_weapon_list = [NightmareLaser(),NightmarePulse(),NightmareMissile(),NightmareMelee()]
             self.blbl = 'Battle UI/label_nightmare.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -768,9 +793,9 @@ init 2 python:
                 }
             self.flak = 100
             self.flak_range = 2
-            self.shield_generation = 100
+            self.shield_generation = 80
             self.shields = self.shield_generation
-            self.shield_range = 2
+            self.shield_range = 0
 
     class Arcadius(Battleship):
         def __init__(self):
@@ -779,19 +804,19 @@ init 2 python:
             self.name = 'Arcadius'
             self.animation_name = 'nightmare'
             self.faction = 'PACT' #for now...
-            self.max_hp = 1000
+            self.max_hp = 1250
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 200
             self.en = self.max_en
-            self.evasion = 37
+            self.evasion = 40
             self.move_cost = 20
-            self.base_armor = 4
-            self.money_reward = 300
-            self.max_missiles = 1
+            self.base_armor = 20
+            self.money_reward = 1000
+            self.max_missiles = 5
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.armor = 4
+            self.armor = self.base_armor
             self.default_weapon_list = [ArcadiusLaser(),ArcadiusPulse(),ArcadiusMissile(),ArcadiusMelee()]
             self.blbl = 'Battle UI/label_nightmare.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -801,7 +826,7 @@ init 2 python:
                 }
             self.flak = 40
             self.flak_range = 1
-            self.shield_generation = 0
+            self.shield_generation = 25
             self.shields = self.shield_generation
             self.shield_range = 0
 
@@ -811,20 +836,20 @@ init 2 python:
             self.stype = 'Ryder'
             self.name = 'PACT Elite'
             self.animation_name = 'pactelite'
-            self.faction = 'PACT'
-            self.max_hp = 700
+            self.faction = 'PACT' #for now...
+            self.max_hp = 1000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 150
             self.en = self.max_en
             self.evasion = 30
             self.move_cost = 20
-            self.base_armor = 3
-            self.money_reward = 80
-            self.max_missiles = 1
+            self.base_armor = 10
+            self.money_reward = 250
+            self.max_missiles = 5
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.armor = 3
+            self.armor = self.base_armor
             self.default_weapon_list = [PACTEliteLaser(),PACTEliteMissile(),PACTEliteMelee(),PACTEliteAssault()]
             self.blbl = 'Battle UI/label_pactelite.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -834,7 +859,7 @@ init 2 python:
                 }
             self.flak = 30
             self.flak_range = 1
-            self.shield_generation = 0
+            self.shield_generation = 10
             self.shields = self.shield_generation
             self.shield_range = 0
 
@@ -846,14 +871,14 @@ init 2 python:
             self.support = True  #signifies to the AI this unit uses support skills
             self.animation_name = 'pactsupport'
             self.faction = 'PACT'
-            self.max_hp = 450
+            self.max_hp = 625
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 120
             self.en = self.max_en
             self.evasion = 40
             self.move_cost = 20
             self.base_armor = 0
-            self.money_reward = 80
+            self.money_reward = 125
             self.max_missiles = 0
             self.max_rockets = 0
             self.missiles = self.max_missiles
@@ -878,26 +903,26 @@ init 2 python:
             self.name = 'PACT Cruiser'
             self.faction = 'PACT'
             self.animation_name = 'pactcruiser'
-            self.max_hp = 900
+            self.max_hp = 5000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 200
             self.en = self.max_en
-            self.money_reward = 300
-            self.max_missiles = 2
+            self.money_reward = 750
+            self.max_missiles = 0
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.evasion = -25  # cruisers are easy to hit
             self.blbl = 'Battle UI/label_pactcruiser.png'  #this is the battle avatar
             self.lbl = self.blbl
-            self.default_weapon_list = [PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()]
-            self.flak = 30
+            self.default_weapon_list = [PACTCruiserLaser(),PACTCruiserKinetic(),PACTCruiserAssault()]            
+            self.flak = 40
             self.flak_range = 2
-            self.shield_generation = 25
+            self.shield_generation = 40
             self.shields = self.shield_generation
             self.shield_range = 1
-            self.base_armor = 30
-            self.move_cost = 30
+            self.base_armor = 40
+            self.move_cost = 40
             self.armor = self.base_armor
 
     class RyuvianCruiser(Battleship):
@@ -907,26 +932,26 @@ init 2 python:
             self.name = 'Ryuvian Cruiser'
             self.faction = 'PACT'
             self.animation_name = 'ryuviancruiser'
-            self.max_hp = 1200
+            self.max_hp = 10000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 240
             self.en = self.max_en
-            self.money_reward = 370
-            self.max_missiles = 2
+            self.money_reward = 5000
+            self.max_missiles = 20
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.evasion = -20  # cruisers are easy to hit
+            self.evasion = 0  # cruisers are easy to hit
             self.blbl = 'Battle UI/label_ryuviancruiser.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [RyuvianCruiserKinetic(),RyuvianCruiserMissile()]
             self.flak = 0
             self.flak_range = 0
-            self.shield_generation = 50
+            self.shield_generation = 80
             self.shields = self.shield_generation
             self.shield_range = 2
-            self.base_armor = 30
-            self.move_cost = 20
+            self.base_armor = 80
+            self.move_cost = 40
             self.armor = self.base_armor
 
     class PactOutpost(Battleship):
@@ -936,9 +961,9 @@ init 2 python:
             self.name = 'PACT Outpost'
             self.faction = 'PACT'
             self.animation_name = 'pactstation'
-            self.max_hp = 900
+            self.max_hp = 6000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 200
             self.en = self.max_en
             self.max_missiles = 0
             self.max_rockets = 0
@@ -946,7 +971,7 @@ init 2 python:
             self.boss = True
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.evasion = -40  # cruisers are easy to hit
+            self.evasion = -50  # cruisers are easy to hit
             self.blbl = 'Battle UI/pactstation.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [PACTOutpostLaser(),PACTOutpostKinetic()]
@@ -955,7 +980,7 @@ init 2 python:
             self.shield_generation = 25
             self.shields = self.shield_generation
             self.shield_range = 2
-            self.base_armor = 20
+            self.base_armor = 50
             self.armor = self.base_armor
             self.move_cost = 1000
 
@@ -966,26 +991,26 @@ init 2 python:
             self.name = 'PACT Battleship'
             self.faction = 'PACT'
             self.animation_name = 'pactbattleship'
-            self.max_hp = 1600
+            self.max_hp = 9000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 240
             self.en = self.max_en
-            self.money_reward = 500
-            self.max_missiles = 2
-            self.max_rockets = 1
+            self.money_reward = 2000
+            self.max_missiles = 10
+            self.max_rockets = 2
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.evasion = -40  # cruisers are easy to hit
             self.blbl = 'Battle UI/label_pactbattleship.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [PACTBattleshipLaser(),PACTBattleshipKinetic(),PACTBattleshipAssault(),PACTBattleshipMissile(),PACTBattleshipRocket()]
-            self.flak = 40
+            self.flak = 60
             self.flak_range = 2
-            self.shield_generation = 40
+            self.shield_generation = 60
             self.shields = self.shield_generation
             self.shield_range = 2
-            self.base_armor = 40
-            self.move_cost = 50
+            self.base_armor = 80
+            self.move_cost = 80
             self.armor = self.base_armor
 
     class PactCarrier(Battleship):
@@ -995,16 +1020,16 @@ init 2 python:
             self.name = 'PACT Carrier'
             #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
             self.spawns = [
-                ( PactMook,50,[ PACTMookLaser(),PACTMookMissile(),PACTMookAssault() ] ),
-                ( PactBomber,100,[ PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket() ] )
+                ( PactMook,120,[ PACTMookLaser(),PACTMookMissile(),PACTMookAssault() ] ),
+                ( PactBomber,240,[ PACTBomberLaser(),PACTBomberMissile(),PACTBomberRocket() ] )
                 ]
             self.faction = 'PACT'
             self.animation_name = 'pactcarrier'
-            self.max_hp = 1900
+            self.max_hp = 10000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 240
             self.en = self.max_en
-            self.money_reward = 500
+            self.money_reward = 2500
             self.max_missiles = 0
             self.max_rockets = 0
             self.missiles = self.max_missiles
@@ -1013,13 +1038,13 @@ init 2 python:
             self.blbl = 'Battle UI/label_pactcarrier.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [PACTCarrierAssault()]
-            self.flak = 60
+            self.flak = 80
             self.flak_range = 2
-            self.shield_generation = 50
+            self.shield_generation = 60
             self.shields = self.shield_generation
             self.shield_range = 2
-            self.base_armor = 40
-            self.move_cost = 50
+            self.base_armor = 80
+            self.move_cost = 80
             self.armor = self.base_armor
 
     class PactAssaultCarrier(Battleship):
@@ -1029,17 +1054,17 @@ init 2 python:
             self.name = 'PACT Assault Carrier'
             #indicate what units this carrier can spawn. syntax: [ship,cost,weaponlist]
             self.spawns = [
-                ( PactElite,60,[ PACTEliteLaser(),PACTEliteMissile(),PACTEliteAssault(),PACTEliteMelee() ] ),
-                ( PactSupport,60,[ PactRepair(), DisableLite(), PactRestore(), PactFlakOff(), PactShutOff() ] )
+                ( PactElite,140,[ PACTEliteLaser(),PACTEliteMissile(),PACTEliteAssault(),PACTEliteMelee() ] ),
+                ( PactSupport,160,[ PactRepair(), DisableLite(), PactRestore(), PactFlakOff(), PactShutOff() ] )
                 ]
             self.faction = 'PACT'
             self.animation_name = 'pactassaultcarrier'
-            self.max_hp = 2000
+            self.max_hp = 11250
             self.hp = self.max_hp
-            self.max_en = 120
+            self.max_en = 300
             self.en = self.max_en
-            self.money_reward = 500
-            self.max_missiles = 2
+            self.money_reward = 2500
+            self.max_missiles = 10
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
@@ -1047,13 +1072,13 @@ init 2 python:
             self.blbl = 'Battle UI/label_pactassaultcarrier.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [PACTAssaultCarrierAssault(),PACTAssaultCarrierMissile(),PACTAssaultCarrierKinetic(),PACTAssaultCarrierLaser()]
-            self.flak = 45
+            self.flak = 60
             self.flak_range = 2
             self.shield_generation = 0
             self.shields = self.shield_generation
             self.shield_range = 0
-            self.base_armor = 20
-            self.move_cost = 30
+            self.base_armor = 60
+            self.move_cost = 60
             self.armor = self.base_armor
 
     class Legion(Battleship):
@@ -1063,26 +1088,26 @@ init 2 python:
             self.name = 'Legion'
             self.faction = 'PACT'
             self.animation_name = 'legion'
-            self.max_hp = 26000
+            self.max_hp = 100000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 500
             self.en = self.max_en
-            self.money_reward = 2000
-            self.max_missiles = 5
+            self.money_reward = 100000
+            self.max_missiles = 50
             self.max_rockets = 0
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.evasion = -70  # cruisers are easy to hit
+            self.evasion = -80  # cruisers are easy to hit
             self.blbl = 'Battle UI/label_legion.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [LegionLaser(),LegionKinetic(),LegionMissile()]
             self.flak = 100
             self.flak_range = 2
-            self.shield_generation = 100
+            self.shield_generation = 80
             self.shields = self.shield_generation
             self.shield_range = 2
-            self.base_armor = 80
-            self.move_cost = 50
+            self.base_armor = 100
+            self.move_cost = 250
             self.armor = self.base_armor
 
 
@@ -1095,13 +1120,13 @@ init 2 python:
             self.name = 'Pirate Bomber'
             self.animation_name = 'piratebomber'
             self.faction = 'Pirate'
-            self.max_hp = 350
+            self.max_hp = 600
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
-            self.max_missiles = 1
+            self.max_missiles = 3
             self.max_rockets = 1
-            self.money_reward = 80
+            self.money_reward = 100
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.base_armor = 8  #Ryders are not typically armored
@@ -1124,19 +1149,19 @@ init 2 python:
             self.name = 'Havoc'
             self.animation_name = 'havoc'
             self.faction = 'Pirate'
-            self.max_hp = 1000
+            self.max_hp = 1250
             self.hp = self.max_hp
             self.max_en = 100
             self.en = self.max_en
             self.boss = True
-            self.max_missiles = 2
+            self.max_missiles = 5
             self.max_rockets = 1
-            self.money_reward = 300
+            self.money_reward = 500
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.base_armor = 14
-            self.armor = 14
-            self.evasion = 8
+            self.base_armor = 20
+            self.armor = 20
+            self.evasion = 10
             self.move_cost = 30
             self.blbl = 'Battle UI/havoc.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -1145,10 +1170,10 @@ init 2 python:
                 'melee':'gameplay/Animations/Havoc/havoc_melee.png',
                 'character':"Character/Cosette/cosette_plugsuit_front_evilsmile.png"
                 }
-            self.flak = 20
+            self.flak = 25
             self.flak_range = 2
             self.default_weapon_list = [HavocMelee(),HavocAssault(),HavocMissile(),HavocRocket()]
-
+            
             ##voices##
             self.voice_channel = "cosvoice"
             self.attack_voice = ["sound/Voice/Cosette/Cosette Melee Attack 1.ogg","sound/Voice/Cosette/Cosette Melee Attack 2.ogg","sound/Voice/Cosette/Cosette Melee Attack 3.ogg","sound/Voice/Cosette/Cosette Melee Attack 4.ogg"]
@@ -1161,16 +1186,16 @@ init 2 python:
             self.name = 'Pirate Grunt'
             self.animation_name = 'pirategrunt'
             self.faction = 'Pirate'
-            self.max_hp = 275
+            self.max_hp = 400
             self.hp = self.max_hp
             self.max_missiles = 0
             self.max_rockets = 0
             self.base_armor = 0
             self.armor = 0
-            self.money_reward = 50
+            self.money_reward = 75
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
-            self.evasion = 12
+            self.evasion = 20
             self.move_cost = 20
             self.blbl = 'Battle UI/label_pirategrunt.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
@@ -1188,18 +1213,20 @@ init 2 python:
             self.name = 'Pirate Destroyer'
             self.animation_name = 'piratedestroyer'
             self.faction = 'Pirate'
-            self.max_hp = 500
+            self.max_hp = 2000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 150
             self.en = self.max_en
             self.move_cost = 30
             self.evasion = -10
-            self.money_reward = 100
+            self.money_reward = 250
             self.blbl = 'Battle UI/label_piratedestroyer.png'  #this is the battle avatar
             self.lbl = self.blbl #this is what is displayed and can be changed to suit the moment
             self.default_weapon_list = [PirateDestroyerLaser(),PirateDestroyerKinetic()]
             self.flak = 0
             self.flak_range = 0
+            self.base_armor = 20
+            self.armor = self.base_armor
 
     class PirateBase(Battleship):
         def __init__(self):
@@ -1208,26 +1235,26 @@ init 2 python:
             self.name = 'Pirate Base'
             self.faction = 'Pirate'
             self.animation_name = 'piratebase'
-            self.max_hp = 1200
+            self.max_hp = 10000
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 200
             self.en = self.max_en
-            self.max_missiles = 5
+            self.max_missiles = 10
             self.max_rockets = 0
             self.boss = True
-            self.money_reward = 1000
+            self.money_reward = 2000
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.evasion = -50  # cruisers are easy to hit
             self.blbl = 'Battle UI/label_piratebase.png'  #this is the battle avatar
             self.lbl = self.blbl
             self.default_weapon_list = [PirateBaseKinetic(),PirateBaseAssault(),PirateBaseMissile()]
-            self.flak = 30
+            self.flak = 60
             self.flak_range = 1
-            self.shield_generation = 25
+            self.shield_generation = 60
             self.shields = self.shield_generation
             self.shield_range = 2
-            self.base_armor = 50
+            self.base_armor = 80
             self.armor = self.base_armor
             self.move_cost = 1000
 
@@ -1238,14 +1265,14 @@ init 2 python:
             self.name = 'Pirate Ironhog'
             self.faction = 'Pirate'
             self.animation_name = 'pirateironhog'
-            self.max_hp = 480
+            self.max_hp = 1250
             self.hp = self.max_hp
-            self.max_en = 100
+            self.max_en = 150
             self.en = self.max_en
             self.max_missiles = 0
             self.max_rockets = 3
             self.boss = False
-            self.money_reward = 175
+            self.money_reward = 250
             self.missiles = self.max_missiles
             self.rockets = self.max_rockets
             self.evasion = -10  # cruisers are easy to hit
@@ -1257,7 +1284,7 @@ init 2 python:
             self.shield_generation = 0
             self.shields = self.shield_generation
             self.shield_range = 0
-            self.base_armor = 7
+            self.base_armor = 10
             self.armor = self.base_armor
             self.move_cost = 20
 
@@ -1268,24 +1295,26 @@ init 2 python:
     class SunriderLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 200
-            self.energy_use = 70
+            self.damage = 640
+            self.energy_use = 80
             self.shot_count = 1
             self.accuracy = 120
+            self.max_range = None
             self.wtype = 'Laser'
             self.name = 'Trinities'
             self.lbl = 'Battle UI/button_laser.png'
             self.tooltip = """
-            Lasers are accurate even from long distances, but lack fire power.
-            Mitigated by enemy shields."""
+            Stream lasers are accurate even from long distances and can pierce armor,
+            but have less firepower than kinetic cannons. Mitigated by enemy shields."""
 
     class SunriderMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 50
-            self.energy_use = 30
+            self.damage = 75
+            self.energy_use = 40
             self.shot_count = 10
             self.accuracy = 80
+            self.max_range = None
             self.uses_rockets = False
             self.uses_missiles = True
             self.wtype = 'Missile'
@@ -1293,61 +1322,67 @@ init 2 python:
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
-            their large numbers provide heavy fire power and great accuracy even
+            their large numbers provide heavy firepower and great accuracy even
             at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles."""
 
     class SunriderKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 400
-            self.energy_use = 70
-            self.shot_count = 1
-            self.accuracy = 70
+            self.damage = 500
+            self.energy_use = 80
+            self.shot_count = 2
+            self.accuracy = 60
+            self.max_range = None
             self.wtype = 'Kinetic'
             self.name = 'Sunrider\'s main guns'
             self.lbl = 'Battle UI/button_kinetic.png'
             self.tooltip = """
-            Kinetics pack a punch, but are inaccurate against distant or small foes.
+            Kinetics have destructive firepower able to cripple heavy armor and passes
+            through the target's shields, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
 
     class SunriderPulse(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 25
-            self.energy_use = 40
-            self.shot_count = 10
-            self.accuracy = 90
+            self.damage = 40
+            self.energy_use = 60
+            self.shot_count = 20
+            self.accuracy = 100
+            self.max_range = 10
             self.wtype = 'Pulse'
             self.name = 'Sunrider_Pulse'
             self.lbl = 'Battle UI/button_pulse.png'
             self.tooltip = """
-            Fires a high volume of laser pulses. Even if the enemy evades one bolt,
-            others may still strike. Collectively, they are more powerful than
-            stream lasers, but cannot pierce armor. Also mitigated by shields."""
+            Fires a high volume of laser pulses. Have good accuracy even at longer
+            distances. Collectively, they are more powerful than stream lasers and do
+            considerable damage with each shot, but cannot pierce armor. Effective
+            against ryders and small ships, but mitigated by shields."""
 
     class SunriderAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 12
-            self.energy_use = 30
-            self.shot_count = 20
+            self.damage = 20
+            self.energy_use = 40
+            self.shot_count = 40
             self.accuracy = 70
+            self.max_range = 8
             self.wtype = 'Assault'
             self.name = 'Sunrider\'s Flak'
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
-            Assault guns spray explosive low caliber rounds at the enemy. Even if
-            the enemy evades one round, others may hit. Armor is twice as
-            effective against assault. Also used to shoot down incoming enemy missiles,
-            but loses effectiveness against sustained barrages."""
+            Assault guns spray explosive high caliber rounds at a rapid fire rate towards the enemy.
+            Effective against small and fast units, but ineffective against armored targets.
+            Armor is twice as effective against assault weapons. Also used to shoot down incoming
+            enemy missiles, but loses effectiveness against sustained barrages."""
 
     class SunriderRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 800
-            self.energy_use = 30
+            self.damage = 1250
+            self.energy_use = 40
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
             self.uses_rockets = True
             self.uses_missiles = False
             self.eccm = 10
@@ -1362,144 +1397,157 @@ init 2 python:
     class AllianceCruiserLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 200
-            self.energy_use = 70
+            self.damage = 625
+            self.energy_use = 80
             self.shot_count = 1
-            self.accuracy = 120
+            self.accuracy = 125
+            self.max_range = None
             self.wtype = 'Laser'
             self.name = 'AllianceCruiser_Laser'
             self.lbl = 'Battle UI/button_laser.png'
             self.tooltip = """
-            Lasers are accurate even from long distances, but lack fire power.
-            Mitigated by enemy shields."""
+            Stream lasers are accurate even from long distances and can pierce armor,
+            but have less firepower than kinetic cannons. Mitigated by enemy shields."""
 
     class AllianceCruiserMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 70
-            self.energy_use = 30
-            self.shot_count = 5
+            self.damage = 150
+            self.energy_use = 40
+            self.shot_count = 8
             self.accuracy = 100
+            self.max_range = None
             self.uses_rockets = False
             self.uses_missiles = True
+            self.eccm = 10
             self.wtype = 'Missile'
             self.name = 'AllianceCruiser_Missile'
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
-            their large numbers provide heavy fire power and great accuracy even
+            their large numbers provide heavy firepower and great accuracy even
             at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles."""
 
 
     class AllianceCruiserKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 400
-            self.energy_use = 60
-            self.shot_count = 1
-            self.accuracy = 75
+            self.damage = 500
+            self.energy_use = 80
+            self.shot_count = 2
+            self.accuracy = 90
+            self.max_range = None
             self.wtype = 'Kinetic'
             self.name = 'AllianceCruiser_Kinetic'
             self.lbl = 'Battle UI/button_kinetic.png'
             self.tooltip = """
-            Kinetics pack a punch, but are inaccurate against distant or small foes.
+            Kinetics have destructive firepower able to cripple heavy armor and passes
+            through the target's shields, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
 
 
     class AllianceCruiserAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 12
-            self.energy_use = 30
-            self.shot_count = 15
-            self.accuracy = 70
+            self.damage = 20
+            self.energy_use = 40
+            self.shot_count = 40
+            self.accuracy = 100
+            self.max_range = 8
             self.wtype = 'Assault'
             self.name = 'AllianceCruiser_Assault'
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
-            Assault guns spray explosive low caliber rounds at the enemy. Even if
-            the enemy evades one round, others may hit. Armor is twice as
-            effective against assault. Also used to shoot down incoming enemy missiles,
-            but loses effectiveness against sustained barrages."""
+            Assault guns spray explosive high caliber rounds at a rapid fire rate towards the enemy.
+            Effective against small and fast units, but ineffective against armored targets.
+            Armor is twice as effective against assault weapons. Also used to shoot down incoming
+            enemy missiles, but loses effectiveness against sustained barrages."""
 
 ##############ALLIANCE BATTLESHIP WEAPONS
     class AllianceBattleshipLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 250
-            self.energy_use = 70
+            self.damage = 800
+            self.energy_use = 80
             self.shot_count = 1
-            self.accuracy = 110
+            self.accuracy = 125
+            self.max_range = None
             self.wtype = 'Laser'
             self.name = 'AllianceBattleship_Laser'
             self.lbl = 'Battle UI/button_laser.png'
             self.tooltip = """
-            Lasers are accurate even from long distances, but lack fire power.
-            Mitigated by enemy shields."""
+            Stream lasers are accurate even from long distances and can pierce armor,
+            but have less firepower than kinetic cannons. Mitigated by enemy shields."""
 
     class AllianceBattleshipMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 80
-            self.energy_use = 30
-            self.shot_count = 8
+            self.damage = 150
+            self.energy_use = 60
+            self.shot_count = 10
             self.accuracy = 100
+            self.max_range = None
             self.uses_rockets = False
             self.uses_missiles = True
+            self.eccm = 10
             self.wtype = 'Missile'
             self.name = 'AllianceBattleship_Missile'
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
-            their large numbers provide heavy fire power and great accuracy even
+            their large numbers provide heavy firepower and great accuracy even
             at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles."""
 
     class AllianceBattleshipKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 430
-            self.energy_use = 60
-            self.shot_count = 1
-            self.accuracy = 65
+            self.damage = 300
+            self.energy_use = 80
+            self.shot_count = 6
+            self.accuracy = 90
+            self.max_range = None
             self.wtype = 'Kinetic'
             self.name = 'AllianceBattleship_Kinetic'
             self.lbl = 'Battle UI/button_kinetic.png'
             self.tooltip = """
-            Kinetics pack a punch, but are inaccurate against distant or small foes.
+            Kinetics have destructive firepower able to cripple heavy armor and passes
+            through the target's shields, but are inaccurate against distant or small foes.
             Armor is twice as effective at mitigating kinetic weaponry."""
 
     class AllianceBattleshipCannon(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 1100
-            self.energy_use = 120
+            self.damage = 5000
+            self.energy_use = 320
             self.shot_count = 1
             self.accuracy = 60
+            self.max_range = None
             self.wtype = 'Kinetic'
             self.name = 'AllianceBattleship_Cannon'
             self.lbl = 'Battle UI/button_cannon.png'
-            self.animation_name = 'kinetic2'
+            self.animation_name = 'kinetic2' 
             self.tooltip = """
-            The ultimate in interstellar destruction. Can punch holes through
+            The ultimate weapon in interstellar destruction. Can punch holes through even
             the toughest armor, but requires an enormous amount of energy. Ineffective against
-            small targets."""
+            small targets due to their high evasion."""
 
 
     class AllianceBattleshipAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 25
-            self.energy_use = 30
-            self.shot_count = 15
-            self.accuracy = 63
+            self.energy_use = 40
+            self.shot_count = 40
+            self.accuracy = 90
+            self.max_range = 8
             self.wtype = 'Assault'
             self.name = 'AllianceBattleship_Assault'
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
-            Assault guns spray explosive low caliber rounds at the enemy. Even if
-            the enemy evades one round, others may hit. Armor is twice as
-            effective against assault. Also used to shoot down incoming enemy missiles,
-            but loses effectiveness against sustained barrages."""
+            Assault guns spray explosive high caliber rounds at a rapid fire rate towards the enemy.
+            Effective against small and fast units, but ineffective against armored targets.
+            Armor is twice as effective against assault weapons. Also used to shoot down incoming
+            enemy missiles, but loses effectiveness against sustained barrages."""
 
 
 ###################BLACK JACK WEAPONS
@@ -1507,15 +1555,18 @@ init 2 python:
     class BlackjackLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 200
-            self.energy_use = 70
+            self.damage = 400
+            self.energy_use = 50
             self.shot_count = 1
-            self.accuracy = 110
+            self.accuracy = 120
+            self.max_range = None
             self.wtype = 'Laser'
             self.name = 'Blackjack_Laser'
             self.lbl = 'Battle UI/button_laser.png'
             self.tooltip = """
-            Lasers are accurate even from long distances, but lack fire power.
+            Stream lasers are accurate even from long distances and can pierce armor,
+            but have less firepower than kinetic cannons. The Black Jack have impressive
+            laser batteries that can match the ones fitted on large warships.
             Mitigated by enemy shields."""
 
 
@@ -1523,9 +1574,10 @@ init 2 python:
         def __init__(self):
             Missile.__init__(self)
             self.damage = 40
-            self.energy_use = 20
+            self.energy_use = 30
             self.shot_count = 10
-            self.accuracy = 70
+            self.accuracy = 80
+            self.max_range = None
             self.uses_rockets = False
             self.uses_missiles = True
             self.wtype = 'Missile'
@@ -1533,50 +1585,53 @@ init 2 python:
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
-            their large numbers provide heavy fire power and great accuracy even
-            at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles.
+            their large numbers provide heavy firepower and great accuracy even
+            at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles. 
             """
 
     class BlackjackPulse(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 30
-            self.energy_use = 50
-            self.shot_count = 8
-            self.accuracy = 80
+            self.damage = 40
+            self.energy_use = 30
+            self.shot_count = 10
+            self.accuracy = 100
+            self.max_range = 10
             self.wtype = 'Pulse'
             self.name = 'Blackjack_Pulse'
             self.lbl = 'Battle UI/button_pulse.png'
             self.tooltip = """
-            Fires a high volume of laser pulses. Even if the enemy evades one bolt,
-            others may still strike. Collectively, they are more powerful than
-            stream lasers, but cannot pierce armor. Also mitigated by shields."""
+            Fires a high volume of laser pulses. Have good accuracy even at longer
+            distances. Collectively, they are more powerful than stream lasers and do
+            considerable damage with each shot, but cannot pierce armor. Effective
+            against ryders and small ships, but mitigated by shields."""
 
     class BlackjackAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 14
+            self.damage = 12
             self.energy_use = 30
-            self.shot_count = 20
-            self.accuracy = 65
+            self.shot_count = 30
+            self.accuracy = 70
+            self.max_range = 8
             self.wtype = 'Assault'
             self.name = 'Blackjack_Assault'
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
-            Assault guns spray explosive low caliber rounds at the enemy. Even if
-            the enemy evades one round, others may hit. Armor is twice as
-            effective against assault. Also used to shoot down incoming enemy missiles,
-            but loses effectiveness against sustained barrages."""
+            Assault guns spray explosive high caliber rounds at a rapid fire rate towards the enemy.
+            Effective against small and fast units, but ineffective against armored targets. The Black Jack
+            can fire more rounds at once than regular ryders thanks to her twin guns. Also used to shoot down
+            incoming enemy missiles, but loses effectiveness against sustained barrages."""
 
     class BlackjackMelee(Melee):
         def __init__(self):
             Melee.__init__(self)
             self.damage = 400    #multiplied by shot count
-            self.energy_use = 40
+            self.energy_use = 30
             self.ammo_use = 0
-            self.accuracy = 70
-            self.acc_degradation = 0
+            self.accuracy = 100
             self.wtype = 'Melee'
+            self.name = 'Zantetsuken'  #lol
             self.type = 'Melee'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_melee.png'
@@ -1590,16 +1645,18 @@ init 2 python:
     class LibertyLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 100
-            self.energy_use = 50
+            self.damage = 200
+            self.energy_use = 40
             self.shot_count = 1
-            self.accuracy = 110
+            self.accuracy = 120
+            self.max_range = None
             self.wtype = 'Laser'
             self.name = 'Liberty_Laser'
             self.lbl = 'Battle UI/button_laser.png'
             self.tooltip = """
-            Lasers are accurate even from long distances, but lack fire power.
-            Mitigated by enemy shields."""
+            Stream lasers are accurate even from long distances and can pierce armor,
+            but have less firepower than kinetic cannons. The Liberty's laser is only useful
+            against weak targets. Mitigated by enemy shields."""
 
 
 ###################PALADIN WEAPONS
@@ -1608,9 +1665,10 @@ init 2 python:
         def __init__(self):
             Missile.__init__(self)
             self.damage = 80
-            self.energy_use = 20
+            self.energy_use = 30
             self.shot_count = 5
-            self.accuracy = 70
+            self.accuracy = 80
+            self.max_range = None
             self.uses_rockets = False
             self.uses_missiles = True
             self.wtype = 'Missile'
@@ -1618,47 +1676,55 @@ init 2 python:
             self.lbl = 'Battle UI/button_missile.png'
             self.tooltip = """
             Fires a barrage of guided missiles at the enemy. While individually weak,
-            their large numbers provide heavy fire power and great accuracy even
+            their large numbers provide heavy firepower and great accuracy even
             at long range. Limited in supply. Enemy flak and heavy armor mitigate missiles."""
-
+            
     class PaladinAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 14
+            self.damage = 16
             self.energy_use = 30
-            self.shot_count = 10
+            self.shot_count = 20
             self.accuracy = 70
+            self.max_range = 8
             self.wtype = 'Assault'
             self.name = 'Paladin_Assault'
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
-            Assault guns spray explosive low caliber rounds at the enemy. Even if
-            the enemy evades one round, others may hit. Armor is twice as
-            effective against assault. Also used to shoot down incoming enemy missiles,
-            but loses effectiveness against sustained barrages."""
+            Assault guns spray explosive high caliber rounds at a rapid fire rate towards the enemy.
+            Effective against small and fast units, but ineffective against armored targets. The Paladin
+            shoots the normal amount of rounds but each round carries more firepower than standard ryders.
+            Also used to shoot down incoming enemy missiles, but loses effectiveness against sustained barrages."""
 
 
     class PaladinKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 400
-            self.energy_use = 60
-            self.shot_count = 1
+            self.damage = 240
+            self.energy_use = 50
+            self.shot_count = 2
             self.accuracy = 70
+            self.max_range = None
             self.wtype = 'Kinetic'
             self.name = 'Paladin_Kinetic'
             self.lbl = 'Battle UI/button_kinetic.png'
             self.tooltip = """
-            Kinetics pack a punch, but are inaccurate against distant or small foes.
+            Kinetics have destructive firepower able to cripple heavy armor and passes
+            through the target's shields, but are inaccurate against distant or small foes.
+            The Paladin carries a mobile artillery version that is more accurate and gives
+            her powerful anti-ship capabilities strong enough to damage even larger ships.
             Armor is twice as effective at mitigating kinetic weaponry."""
+
 
 ############################################# PACT MISSILE FRIGATE
 
     class PactFrigateMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 50
-            self.shot_count = 6
+            self.damage = 125
+            self.accuracy = 60
+            self.shot_count = 5
+            self.eccm = 10
             self.energy_use = 60
 
 ############################################# PIRATE GRUNT
@@ -1666,10 +1732,11 @@ init 2 python:
     class PirateGruntLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 120
-            self.energy_use = 70
+            self.damage = 175
+            self.energy_use = 50
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
 
     class PirateGruntMissile(Missile):
         def __init__(self):
@@ -1678,14 +1745,16 @@ init 2 python:
             self.energy_use = 30
             self.shot_count = 8
             self.accuracy = 70
+            self.max_range = None
 
     class PirateGruntAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 15
-            self.energy_use = 40
-            self.shot_count = 10
-            self.accuracy = 60
+            self.energy_use = 30
+            self.shot_count = 20
+            self.accuracy = 75
+            self.max_range = 8
             self.wtype = 'Assault'
 
 
@@ -1694,42 +1763,46 @@ init 2 python:
     class HavocMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 30
+            self.damage = 125
             self.energy_use = 30
-            self.shot_count = 8
-            self.accuracy = 70
+            self.shot_count = 5
+            self.accuracy = 80
+            self.eccm = 10
+            self.max_range = None
             self.wtype = 'Missile'
 
     class HavocAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 18
-            self.energy_use = 50
-            self.shot_count = 15
-            self.accuracy = 60
+            self.damage = 30
+            self.energy_use = 30
+            self.shot_count = 30
+            self.accuracy = 100
+            self.max_range = 10
             self.wtype = 'Assault'
 
     class HavocRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 300
-            self.energy_use = 50
+            self.damage = 750
+            self.energy_use = 30
             self.uses_rockets = True
             self.uses_missiles = False
-            self.eccm = 10
+            self.eccm = 20
             self.wtype = 'Rocket'
-            self.accuracy = 60
+            self.accuracy = 100
+            self.max_range = None
             self.shot_count = 1
 
     class HavocMelee(Melee):
         #wow, I never realized the Havoc had a multi hit melee attack
         def __init__(self):
             Melee.__init__(self)
-            self.damage = 40    #multiplied by shot count
-            self.energy_use = 50
+            self.damage = 50    #multiplied by shot count
+            self.energy_use = 30
             self.ammo_use = 0
-            self.accuracy = 140
-            self.acc_degradation = 100
+            self.accuracy = 100
+            self.max_range = 1
             self.wtype = 'Melee'
             self.shot_count = 10
 
@@ -1738,19 +1811,21 @@ init 2 python:
     class PirateBomberMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 30
-            self.energy_use = 30
-            self.shot_count = 6
-            self.accuracy = 70
+            self.damage = 100
+            self.energy_use = 50
+            self.shot_count = 5
+            self.accuracy = 80
+            self.max_range = None
             self.wtype = 'Missile'
 
     class PirateBomberAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 14
+            self.damage = 20
             self.energy_use = 50
-            self.shot_count = 10
-            self.accuracy = 60
+            self.shot_count = 20
+            self.accuracy = 70
+            self.max_range = 8
             self.wtype = 'Assault'
 
     class PirateBomberRocket(Missile):
@@ -1763,6 +1838,7 @@ init 2 python:
             self.eccm = 10
             self.wtype = 'Rocket'
             self.accuracy = 60
+            self.max_range = None
             self.shot_count = 1
 
 ########################################## PIRATE IRONHOG
@@ -1770,22 +1846,24 @@ init 2 python:
     class PirateIronhogAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 19
+            self.damage = 25
             self.energy_use = 50
-            self.shot_count = 23
-            self.accuracy = 65
+            self.shot_count = 40
+            self.accuracy = 80
+            self.max_range = 8
             self.wtype = 'Assault'
 
     class PirateIronhogRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 275
+            self.damage = 375
             self.energy_use = 60
             self.uses_rockets = True
             self.uses_missiles = False
-            self.eccm = 10
+            self.eccm = 20
             self.wtype = 'Rocket'
             self.accuracy = 80
+            self.max_range = None
             self.shot_count = 4
 
 ########################################### PIRATE DESTROYER
@@ -1793,44 +1871,49 @@ init 2 python:
     class PirateDestroyerLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 150
-            self.energy_use = 70
+            self.damage = 300
+            self.energy_use = 60
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
 
     class PirateDestroyerKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 250
+            self.damage = 500
             self.energy_use = 60
             self.shot_count = 1
-            self.accuracy = 60
+            self.accuracy = 75
+            self.max_range = None
 
 ################################################PACT CRUISER
 
     class PACTCruiserLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 200
-            self.energy_use = 70
+            self.damage = 500
+            self.energy_use = 80
             self.shot_count = 1
-            self.accuracy = 100
+            self.accuracy = 120
+            self.max_range = None
 
     class PACTCruiserKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 350
-            self.energy_use = 60
-            self.shot_count = 1
-            self.accuracy = 55
+            self.damage = 400
+            self.energy_use = 80
+            self.shot_count = 2
+            self.accuracy = 75
+            self.max_range = None
 
     class PACTCruiserAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 13
+            self.damage = 20
             self.energy_use = 40
-            self.shot_count = 15
-            self.accuracy = 50
+            self.shot_count = 30
+            self.accuracy = 75
+            self.max_range = 8
             self.wtype = 'Assault'
 
 ################################################RYUVIAN CRUISER
@@ -1838,28 +1921,32 @@ init 2 python:
     class RyuvianCruiserMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 60
+            self.damage = 200
             self.energy_use = 60
-            self.shot_count = 5
-            self.accuracy = 110
+            self.shot_count = 10
+            self.accuracy = 100
+            self.eccm = 20
+            self.max_range = None
 
     class RyuvianCruiserKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 350
+            self.damage = 500
             self.energy_use = 60
-            self.shot_count = 1
-            self.accuracy = 60
+            self.shot_count = 2
+            self.accuracy = 100
+            self.max_range = None
 
 ################################################ENEMY SERAPHIM
 
     class SeraphimEnemyKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 300
+            self.damage = 500
             self.energy_use = 100
             self.shot_count = 1
             self.accuracy = 150
+            self.max_range = None
 
 
 ################################################PACT OUTPOST
@@ -1867,65 +1954,73 @@ init 2 python:
     class PACTOutpostLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 150
-            self.energy_use = 70
+            self.damage = 400
+            self.energy_use = 80
             self.shot_count = 1
-            self.accuracy = 110
+            self.accuracy = 120
+            self.max_range = None
 
     class PACTOutpostKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 150
-            self.energy_use = 60
-            self.shot_count = 2
-            self.accuracy = 50
+            self.damage = 250
+            self.energy_use = 80
+            self.shot_count = 6
+            self.accuracy = 80
+            self.max_range = None
 
 ################################################PACT BATTLESHIP
 
     class PACTBattleshipLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 250
-            self.energy_use = 70
+            self.damage = 800
+            self.energy_use = 80
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
 
     class PACTBattleshipKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 500
-            self.energy_use = 60
-            self.shot_count = 1
-            self.accuracy = 55
+            self.energy_use = 80
+            self.shot_count = 3
+            self.accuracy = 75
+            self.max_range = None
 
     class PACTBattleshipAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 25
-            self.energy_use = 30
-            self.shot_count = 15
-            self.accuracy = 50
+            self.energy_use = 60
+            self.shot_count = 40
+            self.accuracy = 75
+            self.max_range = 8
             self.wtype = 'Assault'
 
     class PACTBattleshipMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 40
-            self.energy_use = 40
-            self.shot_count = 10
+            self.damage = 100
+            self.energy_use = 80
+            self.shot_count = 15
             self.accuracy = 80
+            self.max_range = None
+            self.eccm = 10
             self.wtype = 'Missile'
 
     class PACTBattleshipRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 700
-            self.energy_use = 50
+            self.damage = 2500
+            self.energy_use = 80
             self.uses_rockets = True
             self.uses_missiles = False
-            self.eccm = 10
+            self.eccm = 20
             self.wtype = 'Rocket'
             self.accuracy = 80
+            self.max_range = None
             self.shot_count = 1
 
 ################################################PACT ASSAULT CARRIER
@@ -1933,35 +2028,40 @@ init 2 python:
     class PACTAssaultCarrierLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 320
-            self.energy_use = 60
+            self.damage = 1000
+            self.energy_use = 80
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
 
     class PACTAssaultCarrierKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 350
-            self.energy_use = 60
-            self.shot_count = 2
-            self.accuracy = 65
+            self.damage = 400
+            self.energy_use = 80
+            self.shot_count = 4
+            self.accuracy = 80
+            self.max_range = None
 
     class PACTAssaultCarrierAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 30
-            self.energy_use = 30
-            self.shot_count = 15
-            self.accuracy = 55
+            self.energy_use = 60
+            self.shot_count = 30
+            self.accuracy = 80
+            self.max_range = 8
             self.wtype = 'Assault'
 
     class PACTAssaultCarrierMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 50
-            self.energy_use = 30
-            self.shot_count = 10
+            self.damage = 100
+            self.energy_use = 80
+            self.shot_count = 15
             self.accuracy = 80
+            self.max_range = None
+            self.eccm = 10
             self.wtype = 'Missile'
 
 ################################################LEGION
@@ -1969,26 +2069,30 @@ init 2 python:
     class LegionLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 500
-            self.energy_use = 60
-            self.shot_count = 1
+            self.damage = 1250
+            self.energy_use = 250
+            self.shot_count = 2
             self.accuracy = 100
+            self.max_range = None
 
     class LegionKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 300
-            self.energy_use = 50
-            self.shot_count = 5
-            self.accuracy = 65
+            self.energy_use = 250
+            self.shot_count = 10
+            self.accuracy = 80
+            self.max_range = None
 
     class LegionMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 200
-            self.energy_use = 50
+            self.damage = 250
+            self.energy_use = 250
             self.shot_count = 10
             self.accuracy = 100
+            self.eccm = 10
+            self.max_range = None
             self.wtype = 'Missile'
 
 
@@ -1998,9 +2102,10 @@ init 2 python:
         def __init__(self):
             Kinetic.__init__(self)
             self.damage = 25
-            self.energy_use = 30
-            self.shot_count = 20
-            self.accuracy = 50
+            self.energy_use = 60
+            self.shot_count = 40
+            self.accuracy = 80
+            self.max_range = 8
             self.wtype = 'Assault'
 
 
@@ -2009,26 +2114,29 @@ init 2 python:
     class PACTMookLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 140
-            self.energy_use = 70
+            self.damage = 200
+            self.energy_use = 50
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
 
     class PACTMookMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
             self.damage = 30
-            self.energy_use = 30
-            self.shot_count = 9
-            self.accuracy = 70
+            self.energy_use = 50
+            self.shot_count = 10
+            self.accuracy = 80
+            self.max_range = None
 
     class PACTMookAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 20
-            self.energy_use = 40
-            self.shot_count = 10
-            self.accuracy = 60
+            self.damage = 18
+            self.energy_use = 30
+            self.shot_count = 20
+            self.accuracy = 75
+            self.max_range = 8
             self.wtype = 'Assault'
 
 
@@ -2037,27 +2145,31 @@ init 2 python:
     class PACTEliteMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 50
-            self.energy_use = 30
-            self.shot_count = 10
-            self.accuracy = 70
+            self.damage = 100
+            self.energy_use = 60
+            self.shot_count = 5
+            self.accuracy = 100
+            self.eccm = 10
+            self.max_range = None
             self.wtype = 'Missile'
 
     class PACTEliteAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 18
-            self.energy_use = 40
-            self.shot_count = 20
-            self.accuracy = 65
+            self.damage = 20
+            self.energy_use = 50
+            self.shot_count = 30
+            self.accuracy = 80
+            self.max_range = 8
             self.wtype = 'Assault'
 
     class PACTEliteLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 230
+            self.damage = 300
             self.energy_use = 60
-            self.accuracy = 110
+            self.accuracy = 120
+            self.max_range = None
             self.shot_count = 1
 
     class PACTEliteMelee(Melee):
@@ -2065,90 +2177,99 @@ init 2 python:
             Melee.__init__(self)
             self.damage = 375
             self.energy_use = 50
-            self.accuracy = 180
-            self.acc_degradation = 100
+            self.accuracy = 100
+            self.max_range = 1
             self.wtype = 'Melee'
             self.shot_count = 1
 
 ######################################### PACT SUPPORT
 
     class PactRepair(Support):
-            def __init__(self):
-                Support.__init__(self)
-                self.repair = True
-                self.damage = 300 #also used for heals
-                self.energy_use = 60
-                self.name = 'Repair I'
-                self.shot_count = 1
-
+        def __init__(self):
+            Support.__init__(self)
+            self.repair = True
+            self.damage = 500 #also used for heals
+            self.energy_use = 60
+            self.max_range = None
+            self.name = 'PACT Repair I'
+            self.shot_count = 1
+                
     class DisableLite(Curse): #halves available EN
-            def __init__(self):
-                Curse.__init__(self)
-                self.energy_use = 100
-                self.accuracy = 9999
-                self.modifies = 'energy regen'
-                self.buff_strength = -50
-                self.buff_duration = 2
-                self.name = 'Disable Lite'
-
-    class PactRestore(Support):
-            def __init__(self):
-                Support.__init__(self)
-                self.energy_use = 60
-                self.modifies = 'restore'
-                self.buff_strength = 1
-                self.buff_duration = 1
-                self.name = 'Restore'
-
-    class PactFlakOff(Curse):
-            def __init__(self):
-                Curse.__init__(self)
-                self.energy_use = 40
-                self.modifies = 'flak'
-                self.sort_on = 'pship.flak'
-                self.accuracy = 9999
-                self.buff_strength = -100
-                self.buff_duration = 2
-                self.name = 'Flak Off'
-
-    class PactShutOff(Curse):
         def __init__(self):
             Curse.__init__(self)
-            self.energy_use = 60
+            self.energy_use = 100
             self.accuracy = 9999
+            self.max_range = None
+            self.modifies = 'energy regen'
+            self.buff_strength = -50
+            self.buff_duration = 2 
+            self.name = 'PACT Disable Lite'
+                
+    class PactRestore(Support):
+        def __init__(self):
+            Support.__init__(self)
+            self.energy_use = 60
+            self.max_range = 3
+            self.modifies = 'restore'
+            self.buff_strength = 1
+            self.buff_duration = 1
+            self.name = 'PACT Restore'
+
+    class PactFlakOff(Curse):
+        def __init__(self):
+            Curse.__init__(self)
+            self.energy_use = 40
+            self.modifies = 'flak'
+            self.sort_on = 'pship.flak'
+            self.accuracy = 9999
+            self.max_range = None
+            self.buff_strength = -40
+            self.buff_duration = 2
+            self.name = 'PACT Flak Off'
+
+    class PactShutOff(Curse):  
+        def __init__(self):
+            Curse.__init__(self)
+            self.energy_use = 40
+            self.accuracy = 9999
+            self.max_range = None
             self.modifies = 'shield_generation'
             self.sort_on = 'pship.shield_generation'
-            self.buff_strength = -100
+            self.buff_strength = -40
             self.buff_duration = 2
-            self.name = 'Shield Down'
-
-
+            self.name = 'PACT Shield Down'
+            
+            
 ############################################## PIRATE BASE
 
     class PirateBaseKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 100
+            self.damage = 300
             self.energy_use = 60
             self.shot_count = 5
-            self.accuracy = 40
+            self.accuracy = 80
+            self.max_range = None
 
     class PirateBaseAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 13
+            self.damage = 30
             self.energy_use = 40
-            self.shot_count = 15
-            self.accuracy = 40
+            self.shot_count = 40
+            self.accuracy = 80
+            self.max_range = 8
             self.wtype = 'Assault'
 
     class PirateBaseMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 20
-            self.energy_use = 40
-            self.shot_count = 15
-            self.accuracy = 70
+            self.damage = 100
+            self.energy_use = 50
+            self.shot_count = 10
+            self.accuracy = 80
+            self.eccm = 10
+            self.max_range = None
 
 ##############################################
 
@@ -2163,36 +2284,41 @@ init 2 python:
             Support.__init__(self)
             self.repair = True
             self.damage = 300 #also used for heals
-            self.energy_use = 80
+            self.energy_use = 60
+            self.max_range = 3
             self.name = 'Repair I'
             self.shot_count = 1
             self.lbl = 'Battle UI/button_repair.png'
             self.tooltip = """
-            Restores approximately 300 HP to target.
+            Restores approximately 300 HP to target. Restores 500 HP after upgrade.
             Has a range of 3 hexes."""
 
     class AccUp(Support):
         def __init__(self):
             Support.__init__(self)
             self.modifies = 'accuracy'
-            self.buff_strength = 15
+            self.buff_strength = 20
             self.buff_duration = 3
+            self.max_range = 3
             self.name = 'Aim Up'
+            self.energy_use = 30
             self.lbl = 'Battle UI/button_aimup.png'
             self.tooltip = """
-            Adds an additional 15 points to the target's weapon accuracy.
+            Adds an additional 20 points to the target's weapon accuracy.
             Has a range of 3 hexes."""
 
     class DamageUp(Support):
         def __init__(self):
             Support.__init__(self)
             self.modifies = 'damage'
-            self.buff_strength = 20
+            self.buff_strength = 25
             self.buff_duration = 3
+            self.max_range = 3
             self.name = 'Damage Up'
+            self.energy_use = 40
             self.lbl = 'Battle UI/button_atkup.png'
             self.tooltip = """
-            Increases the target's weapon damage by 20 percent.
+            Increases the target's weapon damage by 25 percent.
             Has a range of 3 hexes."""
 
     class Restore(Support):
@@ -2202,10 +2328,11 @@ init 2 python:
             self.buff_strength = 1
             self.buff_duration = 1
             self.name = 'Restore'
-            self.energy_use = 40
+            self.energy_use = 30
+            self.max_range = 3
             self.lbl = 'Battle UI/button_restore.png'
             self.tooltip = """
-            Removes all enemy status ailments from the target.
+            Removes all status ailments from an allied unit.
             Has a range of 3 hexes."""
 
     class Stealth(Support):
@@ -2214,14 +2341,14 @@ init 2 python:
             self.self_buff = True
             self.energy_use = 20
             self.accuracy = 100
-            self.acc_degradation = 100
+            self.max_range = None
             self.modifies = 'stealth'
             self.buff_strength = 100
             self.buff_duration = 1
             self.name = 'Stealth'
             self.lbl = 'Battle UI/button_stealth.png'
             self.tooltip = """
-            Become immune to enemy blindsides for one turn."""
+            Becomes immune to enemy blindside attacks for one turn."""
 
     class Awaken(Support):
         def __init__(self):
@@ -2229,80 +2356,94 @@ init 2 python:
             self.self_buff = True
             self.energy_use = 100
             self.accuracy = 100
-            self.hp_cost = 75
-            self.acc_degradation = 100
-            self.modifies = ['damage','accuracy']
+            self.hp_cost = 100
+            self.max_range = None
+            self.modifies = ['damage','accuracy','evasion']
             self.buff_strength = 100
             self.buff_duration = 3
             self.name = 'Awaken'
             self.lbl = 'Battle UI/button_awaken.png'
             self.tooltip = """
-            Temporarily overcharges the Seraphim's systems, providing
-            an additional 100 additional points to accuracy as well as
-            doubling weapon damage for three turns."""
-
+            Sola awakens her true abilities granted by the Ryuvian Royal Bloodline, temporarily overcharging
+            the Seraphim's systems, providing an additional 100 points to accuracy as well as doubling
+            weapon damage and evasion for three turns. However, Sola's awakening will strain her ryder,
+            damaging it upon each awakening."""
+            
     class AwakenAsaga(Support):
         def __init__(self):
             Support.__init__(self)
             self.self_buff = True
             self.energy_use = 100
             self.accuracy = 100
-            self.hp_cost = 100
-            self.acc_degradation = 100
-            self.modifies = ['damage','evasion','armor']
+            self.max_range = None
+            self.hp_cost = 250
+            self.modifies = ['damage','flak','armor','evasion']
             self.buff_strength = 100
             self.buff_duration = -1
             self.name = 'Awaken Asaga'
             self.lbl = 'Battle UI/button_asaawaken.png'
             self.end_of_turn_callback = self.callback
             self.tooltip = """
-            Improves the Black Jack's damage, evasion and armor each turn, but also causes progressively more damage each turn until canceled."""
-
+            Asaga fully awakens to her true abilities of the Ryuvian Royal Bloodline and removes Black Jack's limiter.
+            Doubles Black Jack's combat parameters and improves damage and armor each turn, but also causes
+            progressively more damage each turn until canceled."""
+            
         def callback(self):
-            a,b = blackjack.modifiers['damage']
-            a = a + 50
-            blackjack.modifiers['damage'] = [a,b]
-            a,b = blackjack.modifiers['evasion']
-            a = a + 50
-            blackjack.modifiers['evasion'] = [a,b]
-            a,b = blackjack.modifiers['armor']
-            a = a + 50
-            blackjack.modifiers['armor'] = [a,b]
+            # a,b = blackjack.modifiers['max_hp']
+            # a = a + 20 
+            # blackjack.modifiers['max_hp'] = [a,b]
             # a,b = blackjack.modifiers['accuracy']
-            # a = a + 50
+            # a = a + 20 
             # blackjack.modifiers['accuracy'] = [a,b]
+            a,b = blackjack.modifiers['damage']
+            a = a + 20 
+            blackjack.modifiers['damage'] = [a,b]
+            # a,b = blackjack.modifiers['flak']
+            # a = a + 20 
+            # blackjack.modifiers['flak'] = [a,b]
+            a,b = blackjack.modifiers['armor']
+            a = a + 20 
+            blackjack.modifiers['armor'] = [a,b]
+            # a,b = blackjack.modifiers['evasion']
+            # a = a + 20 
+            # blackjack.modifiers['evasion'] = [a,b]
             blackjack.update_stats()
             blackjack.hp -= (100 +  -b * 40 - 40)
-            if blackjack.hp < 1:
-                blackjack.hp = 1
+            if blackjack.hp < 125: 
+                blackjack.hp = 125
                 blackjack.hate *= 2
+            if blackjack.hp <= 500:
+                blackjack.hate *= 1.5
             if self in blackjack.weapons:
                 blackjack.weapons.remove(self)
                 blackjack.weapons.append(EndAwakenAsaga())
-
+            
     class EndAwakenAsaga(Support):
         def __init__(self):
             Support.__init__(self)
             self.self_buff = True
             self.energy_use = 0
             self.accuracy = 100
+            self.max_range = None
             self.lbl = 'Battle UI/button_asaawaken.png'
             self.tooltip = """
             Cancels the awakening effect"""
-
+        
         def fire(self,parent,target,counter = False):
-            blackjack.modifiers['damage'] = [0,0]
-            blackjack.modifiers['evasion'] = [0,0]
-            blackjack.modifiers['armor'] = [0,0]
+            # blackjack.modifiers['max_hp'] = [0,0]
             # blackjack.modifiers['accuracy'] = [0,0]
+            blackjack.modifiers['damage'] = [0,0]
+            blackjack.modifiers['flak'] = [0,0]
+            blackjack.modifiers['armor'] = [0,0]
+            blackjack.modifiers['evasion'] = [0,0]
             blackjack.update_stats()
             BM.end_turn_callbacks = []
             blackjack.weapons.remove(self)
             blackjack.weapons.append(AwakenAsaga())
-
-
-
-
+            
+       
+            
+            
 
 #### curse skills ####
 
@@ -2312,6 +2453,7 @@ init 2 python:
             self.energy_use = 30
             self.modifies = 'accuracy'
             self.accuracy = 9999
+            self.max_range = None
             self.buff_strength = -25
             self.buff_duration = 3
             self.name = 'Aim Down'
@@ -2324,7 +2466,8 @@ init 2 python:
             Curse.__init__(self)
             self.energy_use = 100
             self.accuracy = 9999
-            self.modifies = ['energy regen','flak', 'shield_generation']
+            self.max_range = None
+            self.modifies = ['energy regen','flak','shield_generation']
             self.buff_strength = -100
             self.buff_duration = 2 #has to be 2 or else the debuff won't last beyond the start of their next turn
             self.name = 'Disable'
@@ -2338,39 +2481,42 @@ init 2 python:
             self.energy_use = 40
             self.modifies = 'flak'
             self.accuracy = 9999
-            self.buff_strength = -100
+            self.max_range = None
+            self.buff_strength = -40
             self.buff_duration = 2
             self.name = 'Flak Off'
             self.lbl = 'Battle UI/button_flak.png'
             self.tooltip = """
-            The target can no longer counter attack or fire flak at missiles for two turns."""
+            Severely lowers the target's flak effectiveness by 40 points for two turns."""
 
     class ShutOff(Curse):  #shuts down shield generation
         def __init__(self):
             Curse.__init__(self)
-            self.energy_use = 60
+            self.energy_use = 40
             self.accuracy = 9999
+            self.max_range = None
             self.modifies = 'shield_generation'
-            self.buff_strength = -100
+            self.buff_strength = -40
             self.buff_duration = 2
-            self.name = 'Shield Down'
+            self.name = 'Shield Off'
             self.lbl = 'Battle UI/button_shutoff.png'
             self.tooltip = """
-            Deactivates the target's shields for two turns."""
+            Severely weakens the target's shields by 40 points for two turns."""
 
     class ShdJam(Curse):  #shuts down shield generation
         def __init__(self):
             Curse.__init__(self)
-            self.energy_use = 40
+            self.energy_use = 50
             self.accuracy = 9999
+            self.max_range = None
             self.modifies = 'shield_generation'
-            self.buff_strength = -15
+            self.buff_strength = -10
             self.buff_duration = 1
             self.cumulative = True  #do not overwrite but add to the current modifier.
             self.name = 'Shield Jam'
             self.lbl = 'Battle UI/button_shdjam.png'
             self.tooltip = """
-            Temporarily reduce the target's shield generation by 15 points. Can be used multiple times on the same target."""
+            Temporarily reduce the target's shields by 10 points. Can be used multiple times on the same target."""
 
 
 ###are these still used?##
@@ -2417,18 +2563,20 @@ init 2 python:
     class PhoenixBoasterLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 180
+            self.damage = 300
             self.energy_use = 70
-            self.shot_count = 1
+            self.shot_count = 4
             self.accuracy = 100
+            self.max_range = None
 
     class PhoenixBoasterAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 10
+            self.damage = 25
             self.energy_use = 30
-            self.shot_count = 15
-            self.accuracy = 60
+            self.shot_count = 40
+            self.accuracy = 80
+            self.max_range = 8
             self.wtype = 'Assault'
 
 ########################################## PACT BOMBER
@@ -2436,31 +2584,34 @@ init 2 python:
     class PACTBomberMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 30
-            self.energy_use = 30
-            self.shot_count = 8
-            self.accuracy = 70
+            self.damage = 80
+            self.energy_use = 50
+            self.shot_count = 5
+            self.accuracy = 80
+            self.max_range = None
             self.wtype = 'Missile'
 
     class PACTBomberRocket(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 300
+            self.damage = 500
             self.energy_use = 50
             self.uses_rockets = True
             self.uses_missiles = False
             self.eccm = 10
             self.wtype = 'Rocket'
             self.accuracy = 60
+            self.max_range = None
             self.shot_count = 1
 
     class PACTBomberLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 140
-            self.energy_use = 70
+            self.damage = 175
+            self.energy_use = 50
             self.shot_count = 1
             self.accuracy = 100
+            self.max_range = None
 
  ###########################################PHOENIX
 
@@ -2469,25 +2620,26 @@ init 2 python:
             Kinetic.__init__(self)
             self.damage = 12
             self.energy_use = 30
-            self.shot_count = 20
-            self.accuracy = 65
+            self.shot_count = 40
+            self.accuracy = 70
+            self.max_range = 8
             self.wtype = 'Assault'
             self.name = 'Phoenix_Assault'
             self.lbl = 'Battle UI/button_assault.png'
             self.tooltip = """
-            Assault guns spray explosive low caliber rounds at the enemy. Even if
-            the enemy evades one round, others may hit. Armor is twice as
-            effective against assault. Also used to shoot down incoming enemy missiles,
-            but loses effectiveness against sustained barrages."""
+            Assault guns spray explosive high caliber rounds at a rapid fire rate towards the enemy.
+            Effective against small and fast units, but ineffective against armored targets. The Phoenix
+            can fire many rounds at once due to her multiple gun barrels, giving her powerful anti-ryder
+            capabilities. Also used to shoot down incoming enemy missiles, but loses effectiveness
+            against sustained barrages."""
 
     class PhoenixMelee(Melee):
         def __init__(self):
             Melee.__init__(self)
             self.damage = 250    #multiplied by shot count
-            self.energy_use = 40
+            self.energy_use = 30
             self.ammo_use = 0
-            self.accuracy = 60
-            self.acc_degradation = 0
+            self.accuracy = 100
             self.wtype = 'Melee'
             self.name = 'Zantetsuken'  #lol
             self.type = 'Melee'
@@ -2495,21 +2647,23 @@ init 2 python:
             self.lbl = 'Battle UI/button_melee.png'
             self.tooltip = """
             Slice an enemy ryder for devastating damage. However, can only be used on adjacent
-            ryders. Moving directly next to an enemy ryder will trigger an enemy blindside attack."""
+            ryders. The Pheonix have twin blades that can cut steel like paper, making her twice
+            as deadly in melee compared to other ryders. Moving directly next to an enemy ryder
+            will trigger an enemy blindside attack."""
 
 
  ###########################################PHOENIX ENEMY
-
+ 
     class PhoenixEnemyMelee(Melee):
         def __init__(self):
             Melee.__init__(self)
             self.damage = 250    #multiplied by shot count
             self.energy_use = 40
             self.ammo_use = 0
-            self.accuracy = 160
-            self.acc_degradation = 100  #this is needed for AI melee weapons or else range is infinite.
+            self.accuracy = 100
+            self.max_range = 1
             self.wtype = 'Melee'
-            self.name = 'Zantetsuken'
+            self.name = 'Zantetsuken' 
             self.type = 'Melee'
             self.shot_count = 2
             self.lbl = 'Battle UI/button_melee.png'
@@ -2518,58 +2672,64 @@ init 2 python:
     class SeraphimKinetic(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 300
-            self.energy_use = 100
+            self.damage = 400
+            self.energy_use = 50
             self.shot_count = 1
             self.accuracy = 150
+            self.max_range = None
             self.tooltip = """
             Sola\'s rifle is an elegant weapon from a more civilized age.
-            Incredibly powerful and accurate weapon, but demands much energy."""
+            Incredibly powerful and very accurate, strong enough to destroy
+            standard ryders in one shot and punch holes through capital ships,
+            but demands much energy."""
 
 ################################################### BIANCA
 
     class BiancaAssault(Kinetic):
         def __init__(self):
             Kinetic.__init__(self)
-            self.damage = 250
-            self.energy_use = 60
-            self.shot_count = 1
-            self.accuracy = 55
+            self.damage = 80
+            self.energy_use = 40
+            self.shot_count = 5
+            self.accuracy = 80
+            self.max_range = 5
             self.wtype = 'Assault'
             self.name = 'Bianca Shotgun'
             self.lbl = 'Battle UI/button_kinetic.png'
             self.tooltip = """
-            Provides reliable firepower, but highly inaccurate unless the target
-            is nearby and large. Can also be used for blindside attacks."""
-
-
+            Bianca's shotgun provides reliable firepower and accuracy, but has a limited attack range of 5 hexes.
+            Highly effective against enemy ryders and small ships, but ineffective against fortified targets
+            and capital ships. Can also be used for blindside attacks."""
+            
+            
 ##################################################### UNION FRIGATE
 
 
     class UnionFrigateLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 175
-            self.energy_use = 60
+            self.damage = 400
+            self.energy_use = 50
             self.shot_count = 1
             self.accuracy = 120
+            self.max_range = None
             self.wtype = 'Laser'
             self.name = 'Trinities'
             self.lbl = 'Battle UI/button_laser.png'
             self.tooltip = """
-            Lasers are accurate even from long distances, but lack fire power.
-            Mitigated by enemy shields."""
+            Stream lasers are accurate even from long distances and can pierce armor,
+            but have less firepower than kinetic cannons. Mitigated by enemy shields."""
 
 ###################################################### NIGHTMARE
 
     class NightmareMelee(Melee):
         def __init__(self):
             Melee.__init__(self)
-            self.damage = 900    #multiplied by shot count
-            self.energy_use = 30
+            self.damage = 800    #multiplied by shot count
+            self.energy_use = 60
             self.ammo_use = 0
-            self.accuracy = 160
-            self.acc_degradation = 100
+            self.accuracy = 100
+            self.max_range = 1
             self.wtype = 'Melee'
             self.type = 'Melee'
             self.shot_count = 1
@@ -2577,27 +2737,31 @@ init 2 python:
     class NightmareMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 100
+            self.damage = 125
             self.energy_use = 60
-            self.shot_count = 15
+            self.shot_count = 10
             self.accuracy = 100
+            self.eccm = 10
+            self.max_range = None
             self.wtype = 'Missile'
 
     class NightmareLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 575
-            self.energy_use = 40
+            self.damage = 1000
+            self.energy_use = 60
             self.shot_count = 1
             self.accuracy = 120
+            self.max_range = None
 
     class NightmarePulse(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 70
-            self.energy_use = 30
+            self.damage = 100
+            self.energy_use = 60
             self.shot_count = 15
-            self.accuracy = 85
+            self.accuracy = 100
+            self.max_range = 10
             self.wtype = 'Pulse'
 
 ###################################################### ARCADIUS
@@ -2606,10 +2770,10 @@ init 2 python:
         def __init__(self):
             Melee.__init__(self)
             self.damage = 500    #multiplied by shot count
-            self.energy_use = 30
+            self.energy_use = 60
             self.ammo_use = 0
-            self.accuracy = 160
-            self.acc_degradation = 100
+            self.accuracy = 100
+            self.max_range = 1
             self.wtype = 'Melee'
             self.type = 'Melee'
             self.shot_count = 1
@@ -2617,101 +2781,116 @@ init 2 python:
     class ArcadiusMissile(Missile):
         def __init__(self):
             Missile.__init__(self)
-            self.damage = 50
+            self.damage = 100
             self.energy_use = 60
-            self.shot_count = 10
-            self.accuracy = 100
+            self.shot_count = 5
+            self.accuracy = 80
+            self.max_range = None
+            self.eccm = 10
             self.wtype = 'Missile'
 
     class ArcadiusLaser(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 300
-            self.energy_use = 40
+            self.damage = 500
+            self.energy_use = 80
             self.shot_count = 1
-            self.accuracy = 110
+            self.accuracy = 120
+            self.max_range = None
 
     class ArcadiusPulse(Laser):
         def __init__(self):
             Laser.__init__(self)
-            self.damage = 50
-            self.energy_use = 40
-            self.shot_count = 12
-            self.accuracy = 78
+            self.damage = 80
+            self.energy_use = 60
+            self.shot_count = 10
+            self.accuracy = 100
+            self.max_range = 10
             self.wtype = 'Pulse'
 
 
-
+            
     ## store items ##
     # see classes.rpy for more details on what each field does
-
+    
     class NewWarhead(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'new warhead'
             self.display_name = "WARHEAD AMMO"
-            self.cost = 300
+            self.cost = 1000            
             self.tooltip = 'Purchase warheads to allow the Sunrider to fire powerful rockets at the enemy. A rocket deals {} damage, but can be shot down by enemy flak. The Sunrider can carry a maximum of 2 at a time.'.format(sunrider.weapons[3].damage)
             self.variable_name = 'sunrider.rockets'    #this decides what is shown in the store after [owned:
             self.max_amt = 2    #you can buy no more than this number of this item. see previous field
-
+            
         def buy(self): #here is where you decide what this item -does-.
             sunrider.rockets += 1
-
+            
     class RocketUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'Rocketupgrade1'
             self.display_name = "QUANTUM TORPEDO LICENSE"
-            self.cost = 2000
-            self.tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 1200.'
-            self.visibility_condition = 'sunrider_rocket.damage < 1200'
-
-        def buy(self):
-            store.sunrider_rocket.damage = 1200
-            store.sunrider_rocket.keep_after_reset['damage'] = 1200
-
+            self.cost = 5000            
+            self.tooltip = 'While the proliferation of nuclear warheads throughout the galaxy has made them readily available, more powerful weapons are regulated closely by the Alliance. With the payment of appropriate fees, the Union can replace your current stock of nuclear warheads with quantum warheads, permanently increasing the Sunrider\'s rocket damage to 2500.'
+            self.visibility_condition = 'sunrider_rocket.damage < 2500'
+            
+        def buy(self):            
+            store.sunrider_rocket.damage = 2500
+            
     class RepairUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'RepairUpgrade1'
             self.display_name = "PORTABLE REPAIR BOOSTER"
-            self.cost = 1000
-            self.tooltip = 'While extensive repairs require time in the dry dock, battlefield repairs are still a must for combat operations. These new portable repair drones will allow the Liberty to repair 200 more HP. This upgrade also reduces the energy cost of the repair ability by 10EN'
+            self.cost = 2000            
+            self.tooltip = 'While extensive repairs require time in the dry dock, battlefield repairs are still a must for combat operations. These new portable repair drones will allow the Liberty to repair 200 more HP.'
             self.visibility_condition = 'store.chigara_repair.damage < 500'
-
-        def buy(self):
+            
+        def buy(self):            
             store.chigara_repair.damage = 500
-            store.chigara_repair.keep_after_reset['damage'] = 500
-            store.chigara_repair.energy_use = 70
-            store.chigara_repair.keep_after_reset['energy_use'] = 70
-
+            
     class NewRepairDrone(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'repair drones'
             self.display_name = "REPAIR DRONE"
-            self.cost = 400
-            self.tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations.  Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 8 at a time.'
+            self.cost = 500            
+            self.tooltip = 'These autonomous robots can rapidly restore destroyed hull sections as well as complex electronic systems. They are a must have for all hostile operations. Restores 50% of the Sunrider\'s HP on use. The Sunrider can carry a maximum of 10 at a time.'
             self.visibility_condition = 'sunrider.repair_drones != None'
             self.variable_name = 'sunrider.repair_drones'
-            self.max_amt = 8
-
-        def buy(self):
+            self.max_amt = 10            
+            
+        def buy(self):            
             sunrider.repair_drones += 1
 
+    class ContractAllianceBattleship(StoreItem):
+        def __init__(self):
+            StoreItem.__init__(self)
+            self.id = 'alliance battleship'
+            self.display_name = "ALLIANCE BATTLESHIP"
+            self.cost = 20000            
+            self.visibility_condition = 'store.mission12_complete'  #not sure
+            self.variable_name = "get_shipcount_in_list('Alliance Battleship',player_ships)"
+            self.max_amt = 2            
+            self.tooltip = 'With the Solar Congress\' declaration of war, the powerful Alliance Battleships have been called to the front lines to fight in key battles and protect strategic locations. Since battleships are valuable and fewer in numbers, it is difficult to get authorization for a battleship deployment. However if you are willing to pay a hefty amount of credits, the Mining Union are willing to fully stretch and utilize its leverage in the Solar Congress to assign a fully operational Alliance Battleship as the Sunrider\'s escort. While slow and bulky, the Alliance Battleship is extremely tough and packs enough firepower to decimate most enemies. Its mounted Spinal Rail-Cannon can punch through even the toughest armor. You can only have up to {} in your fleet at any time.'.format(self.max_amt)
+            
+        def buy(self):            
+            create_ship(AllianceBattleship()) #location=None, weaponlist=[] i.e. default
+            BM.mercenary_count += 1
+            
     class ContractAllianceCruiser(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'alliance cruiser'
             self.display_name = "ALLIANCE CRUISER"
-            self.cost = 2000
+            self.cost = 10000            
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name = "get_shipcount_in_list('Alliance Cruiser',player_ships)"
-            self.max_amt = 2
-            self.tooltip = 'With the Solar Congress\' declaration of war, countless Alliance battle cruisers have been called to the front lines. With a generous payment, the Mining Union can use its leverage in the Solar Congress to assign a fully operational Alliance battle cruiser as the Sunrider\'s escort. While slow, the Alliance battle cruiser is built like a brick and packs a punch. You can have up to {} in your fleet at any time'.format(self.max_amt)
-
-        def buy(self):
+            self.max_amt = 4            
+            self.tooltip = 'With the Solar Congress\' declaration of war, countless Alliance Cruisers have been called to the front lines. With a generous payment, the Mining Union can use its leverage in the Solar Congress to assign a fully operational Alliance Cruiser as the Sunrider\'s escort. While rather slow, the Alliance Cruiser is built like a brick and packs a punch. You can have up to {} in your fleet at any time.'.format(self.max_amt)
+            
+        def buy(self):            
             create_ship(AllianceCruiser()) #location=None, weaponlist=[] i.e. default
             BM.mercenary_count += 1
 
@@ -2720,78 +2899,53 @@ init 2 python:
             StoreItem.__init__(self)
             self.id = 'union frigate'
             self.display_name = "UNION FRIGATE"
-            self.cost = 750
+            self.cost = 2000            
             self.visibility_condition = 'store.mission12_complete'  #not sure
             self.variable_name =  "get_shipcount_in_list('Mining Union Frigate',player_ships)"
-            self.max_amt = 4
-            self.tooltip = 'The Mining Union regularly fields a large private army to protect its shipping from pirates. With the payment of the appropriate fees, you too can have a Union security frigate watching your back. While small and lightly armed, these frigates are inexpensive and speedy. You can have up to {} in your fleet at any time'.format(self.max_amt)
-
-        def buy(self):
+            self.max_amt = 6            
+            self.tooltip = 'The Mining Union regularly fields a large private army to protect its shipping from pirates. With the payment of the appropriate fees, you too can have a Union security frigate watching your back. While rather small and lightly armed, these frigates are inexpensive and speedy. You can have up to {} in your fleet at any time.'.format(self.max_amt)
+            
+        def buy(self):            
             create_ship(UnionFrigate()) #location=None, weaponlist=[] i.e. default
-            BM.mercenary_count += 1
-
+            BM.mercenary_count += 1         
+            
     class SellWishallArtifact(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'wishall'
             self.display_name = "SELL WISHALL"
-            self.cost = -10000
-            self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instant cash infusion of 10 000 credits.'
+            self.cost = -200000            
+            self.tooltip = 'The Wishall is an ancient Ryuvian artifact which allows its user to make one free command decision during the story. Alternately, you may decide to sell it here for an instant cash infusion of 200.000 credits.'
             self.visibility_condition = "store.wishall"
-
+            
         def buy(self): #here is where you decide what this item -does-.
-            store.wishall = False
+            store.wishall = False         
 
     class SunriderShieldUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'sunrider_shield_upgrade'
             self.display_name = "SUNRIDER SHIELD UPGRADE"
-            self.cost = 1500
-            self.tooltip = "Due to the Sunrider's unexpected departure from Cera, she was never outfitted with energy shielding. While her top of the line shield generator was lost with the fall of Cera, the Union can outfit the Sunrider with a basic shield generator. The Sunrider's shields can be further upgraded in the Research Lab after it is purchased."
+            self.cost = 4000            
+            self.tooltip = "Due to the Sunrider's unexpected departure from Cera, she was never outfitted with energy shielding. While her top of the line shield generator was lost with the fall of Cera, the Union can outfit the Sunrider with a shield generator made for Assault Carriers with a shielding range of 2. The Sunrider's shields can be further upgraded in the Research Lab after it is purchased."
             self.visibility_condition = 'store.sunrider.shield_generation == 0'
 
-        def buy(self):
-            store.sunrider.shield_generation = 15
+        def buy(self):            
+            store.sunrider.shield_generation = 20
             store.sunrider.shields = store.sunrider.shield_generation
-            store.sunrider.shield_range = 0
-
-    class BlackJackThrusters(StoreItem):
-        def __init__(self):
-            StoreItem.__init__(self)
-            self.id = 'black_jack_thrusters'
-            self.display_name = "BLACK JACK THRUSTER UPGRADES"
-            self.cost = 750
-            self.tooltip = "The Black Jack was designed to be compatible with military grade high-powered thrusters, but those are not easy to find. Thanks to your connections with the Mining Union, this no longer needs to hold her back."
-            self.visibility_condition = 'store.blackjack.move_cost > 15 and store.mission5_complete'
-
-        def buy(self):
-            store.blackjack.move_cost = 15
-
-    class GravityGunBooster(StoreItem):
-        def __init__(self):
-            StoreItem.__init__(self)
-            self.id = 'gravity_gun_booster'
-            self.display_name = "GRAVITINO GENERATOR"
-            self.cost = 750
-            self.tooltip = "Chigara can make the Bianca's gravity gun more efficient by adding this one of these high tech devices. Energy cost per use will drop to 40 (from 60)."
-            self.visibility_condition = 'store.bianca.weapons[1].energy_use == 60 and mission12_complete'
-
-        def buy(self):
-            store.bianca.weapons[1].energy_use = 40
-            store.bianca.weapons[1].keep_after_reset['energy_use'] = 40
+            store.sunrider.shield_range = 2
             
     class SunriderVanguardUpgrade(StoreItem):
         def __init__(self):
             StoreItem.__init__(self)
             self.id = 'sunrider_vanguard_upgrade'
             self.display_name = "SUNRIDER VANGUARD UPGRADE"
-            self.cost = 1100
-            self.tooltip = "Increase the Vanguard cannon's damage from 800 to 1000 damage and extend the range by 1 hex"
-            self.visibility_condition = 'store.mission12_complete and BM.vanguard_damage < 1000'
+            self.cost = 5000            
+            self.tooltip = "Increase the Vanguard cannon's damage from 2500 to 5000 and extend the range by 2 hexes"
+            self.visibility_condition = 'store.mission12_complete and BM.vanguard_damage < 5000'
 
-        def buy(self):
-            BM.vanguard_damage = 1000
-            BM.vanguard_range = 7
-
-
+        def buy(self):            
+            BM.vanguard_damage = 5000
+            BM.vanguard_range = 8
+            
+            
