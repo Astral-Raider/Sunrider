@@ -1,8 +1,15 @@
 screen upgrade:
     modal True
-    zorder 50
 
     add "Menu/upgrade_back.jpg"
+
+
+
+    # imagebutton:
+        # xpos 0.05 ypos 925
+        # action Return(["submit"])
+        # idle "Menu/submit.jpg"
+        # hover "Menu/submit_hover.jpg"
 
     imagebutton:
         xpos 0.05 ypos 975
@@ -11,7 +18,7 @@ screen upgrade:
         hover "Menu/return_hover.jpg"
 
     if BM.selected == None:
-        $ BM.selected = player_ships[0]
+        $ BM.selected = sunrider
     $ ship = BM.selected
 
     $ can_use_melee = False
@@ -30,62 +37,84 @@ screen upgrade:
     #dictionaries are inherently unsorted, so this is needed ;_;
     $ upgrade_list = []
     $ upgrade_list.append(["BASIC -----------",None,None,None,None])
-    $ upgrade_list.append(ship.upgrades['max_hp'])
-    $ upgrade_list.append(ship.upgrades['max_en'])
-    $ upgrade_list.append(ship.upgrades['evasion'])
+    if ship.max_hp < 12500:
+        $ upgrade_list.append(ship.upgrades['max_hp'])
+    if ship.max_en < 320:
+        $ upgrade_list.append(ship.upgrades['max_en'])
+
+    if ship.evasion > 0:
+        if ship.evasion < 60:
+            $ upgrade_list.append(ship.upgrades['evasion'])
+
 #    $ upgrade_list.append(ship.upgrades['move_cost'])  #probably should be set individually in design
 
     if uses_kinetics:
         $ upgrade_list.append(["KINETIC -----------",None,None,None,None])
-        $ upgrade_list.append(ship.upgrades['kinetic_dmg'])
-        $ upgrade_list.append(ship.upgrades['kinetic_acc'])
-        $ upgrade_list.append(ship.upgrades['kinetic_cost'])
+        if ship.kinetic_dmg < 1.25:
+            $ upgrade_list.append(ship.upgrades['kinetic_dmg'])
+        if ship.kinetic_acc < 1.50:
+            $ upgrade_list.append(ship.upgrades['kinetic_acc'])
+
+        # $ upgrade_list.append(ship.upgrades['kinetic_cost'])
 
     if uses_lasers:
         $ upgrade_list.append(["LASER -----------",None,None,None,None])
-        $ upgrade_list.append(ship.upgrades['energy_dmg'])
-        $ upgrade_list.append(ship.upgrades['energy_acc'])
-        $ upgrade_list.append(ship.upgrades['energy_cost'])
+        if ship.energy_dmg < 1.25:
+            $ upgrade_list.append(ship.upgrades['energy_dmg'])
+        if ship.energy_acc < 1.25:
+            $ upgrade_list.append(ship.upgrades['energy_acc'])
+
+        # $ upgrade_list.append(ship.upgrades['energy_cost'])
 
     if ship.max_missiles > 0:
         $ upgrade_list.append(["MISSILE -----------",None,None,None,None])
-        $ upgrade_list.append(ship.upgrades['missile_dmg'])
-        $ upgrade_list.append(ship.upgrades['missile_eccm'])
-        $ upgrade_list.append(ship.upgrades['missile_cost'])
-        $ upgrade_list.append(ship.upgrades['max_missiles'])
+        if ship.missile_dmg < 2:
+            $ upgrade_list.append(ship.upgrades['missile_dmg'])
+        if ship.missile_eccm < 10:
+            $ upgrade_list.append(ship.upgrades['missile_eccm'])
+        if ship.max_missiles < 10:
+            $ upgrade_list.append(ship.upgrades['max_missiles'])
+
+        # $ upgrade_list.append(ship.upgrades['missile_cost'])
 
     if can_use_melee:
         $ upgrade_list.append(["MELEE -----------",None,None,None,None])
-        $ upgrade_list.append(ship.upgrades['melee_dmg'])
-        $ upgrade_list.append(ship.upgrades['melee_acc'])
-        $ upgrade_list.append(ship.upgrades['melee_cost'])
+        if ship.melee_dmg < 1.50:
+            $ upgrade_list.append(ship.upgrades['melee_dmg'])
+        if ship.melee_acc < 1.25:
+            $ upgrade_list.append(ship.upgrades['melee_acc'])
+
+        # $ upgrade_list.append(ship.upgrades['melee_cost'])
 
     $ upgrade_list.append(["DEFENSES -----------",None,None,None,None])
 
     if ship.shield_generation > 0:
-        $ upgrade_list.append(ship.upgrades['shield_generation'])
-        $ upgrade_list.append(ship.upgrades['shield_range'])
+        if ship.shield_generation < 60:
+            $ upgrade_list.append(ship.upgrades['shield_generation'])
+        # if ship.shield_range < 2:
+            # $ upgrade_list.append(ship.upgrades['shield_range'])
 
     if ship.flak > 0:
-        $ upgrade_list.append(ship.upgrades['flak'])
+        if ship.flak < 80:
+            $ upgrade_list.append(ship.upgrades['flak'])
 
-    $ upgrade_list.append(ship.upgrades['base_armor'])
+    if ship.base_armor < 80:
+        $ upgrade_list.append(ship.upgrades['base_armor'])
 
     if ship.repair > 0:
         $ upgrade_list.append(ship.upgrades['repair'])
 
     ## Upgrade backgrounds moved to their individual classes in the library
-
+    
     add ship.upgrade_menu
-
-    $ funds_text = '${!s}'.format(BM.money) if BM.mission!='skirmish' else 'UNLIMITED'
-    text funds_text:
+    
+    text '${!s}'.format(BM.money):
         size 50
         xpos 70
         ypos 0.76
         color '090'
         outlines [(1,'000',0,0)]
-
+    
     textbutton 'DEBUG: RESEARCH DEVELOPMENT RESTART':
         xalign 1.0
         ypos 0.0
@@ -166,54 +195,36 @@ screen upgrade:
                                     color '000'
                                     min_width 240
 
-                            if level < 19:
-                                text str(level):
-                                    color '000'
-                                    min_width 75
-                            else:
-                                text 'max':
-                                    xpos -15
-                                    color '000'
-                                    min_width 75
-
+                            text str(level):
+                                color '000'
+                                min_width 75
+                                
                             if level > 1:
                                 $cost_width = 100
                             else:
                                 $cost_width = 200
-
-                            if level < 19:
-                                text str(cost):
-                                    color '000'
-                                    min_width cost_width
-                            else:
-                                text ' -':
-                                    color '000'
-                                    min_width cost_width                                
-
+                            
+                            text str(cost):
+                                color '000'
+                                min_width cost_width
+                                
                             if level > 1:
                                 text "({})".format( int(round(cost/multiplier)*0.8) ) :
                                     color '900'
                                     min_width 100
 
-                            if level < 19:
-                                if BM.money >= cost or BM.mission=='skirmish':
-                                    textbutton '+':
-                                        text_color 'fff'
-                                        action Return(['+', attribute])
-                                        hovered SetField(BM,'active_upgrade',upgrade)
-                                        unhovered SetField(BM,'active_upgrade',None)
-                                else:
-                                    textbutton 'X':
-                                        text_color 'c00'
-                                        action Play('chivoice','sound/Voice/Chigara/Others Line 4.ogg')
-                                        hovered SetField(BM,'active_upgrade',upgrade)
-                                        unhovered SetField(BM,'active_upgrade',None)
+                            if BM.money >= cost:
+                                textbutton '+':
+                                    text_color 'fff'
+                                    action Return(['+', attribute])
+                                    hovered SetField(BM,'active_upgrade',upgrade)
+                                    unhovered SetField(BM,'active_upgrade',None)
                             else:
                                 textbutton 'X':
                                     text_color 'c00'
-                                    action NullAction()
-                                    hovered None
-                                    unhovered None
+                                    action Play('chivoice','sound/Voice/Chigara/Others Line 4.ogg')
+                                    hovered SetField(BM,'active_upgrade',upgrade)
+                                    unhovered SetField(BM,'active_upgrade',None)
 
                             if level > 1:
                                 textbutton '-':
@@ -221,7 +232,7 @@ screen upgrade:
                                     action Return(['-', attribute])
                                     hovered SetField(BM,'active_upgrade',upgrade)
                                     unhovered SetField(BM,'active_upgrade',None)
-
+                                    
 
       ##show weapon icons and their stats##
     if BM.active_upgrade != None:
@@ -244,7 +255,7 @@ screen upgrade:
 
             $ count = 0
             for weapon in ship.weapons:
-                if name.find( get_weapon_type(weapon) ) == 0:
+                if name.find( weapon_type(weapon) ) == 0:
                     add weapon.lbl:
                         ypos (750 + count*140)
                         xpos 480
@@ -273,23 +284,21 @@ screen upgrade:
                             color '000'
 
                     $ count += 1
-
+    
         frame:
             background Solid((255,255,255,255))
             xpos 0.46
             ypos 0.7
             vbox:
-                if level < 18:
-                    label "Future costs:":
-                        right_padding 10
-                        text_color '000'
+                label "Future costs:":
+                    right_padding 10
+                    text_color '000'
                 for i in range(1,10):
                     hbox:
-                        if level+i+1 < 20:
-                            text "Mark {}:".format( level+i+1 ):
-                                min_width 100
-                                color '000'
-                            text " ${}".format( int(cost*multiplier**i) ):
-                                color '000'
-
-
+                        text "Mark {}:".format( level+i+1 ):
+                            min_width 100
+                            color '000'
+                        text " ${}".format( int(cost*multiplier**i) ):
+                            color '000'
+                
+                    
