@@ -1690,6 +1690,11 @@ init -2 python:
             self.armor_color = '000'
             if self.armor < self.base_armor: self.armor_color = '700'
             if self.armor > self.base_armor: self.armor_color = '070'
+            if self.armor <= (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * (float(self.max_hp) * 50 / 100) / float(self.max_hp): self.armor = (self.base_armor * 50 / 100)
+            if self.stype == 'Ryder':
+                self.armor = (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * self.hp / float(self.max_hp)
+                if self.armor <= (self.base_armor * ( 100 + self.modifiers['armor'][0]) / 100.0 ) * (float(self.max_hp) * 25 / 100) / float(self.max_hp): self.armor = (self.base_armor * 25 / 100)
+                self.armor = int(self.armor)
 
         def update_stats(self):
             try:
@@ -1730,6 +1735,7 @@ init -2 python:
             if self.shields > 100: self.shields = 100
             self.shield_color = '000'
             if self.shields > self.shield_generation: self.shield_color = '070'
+            if self.shields < self.shield_generation: self.shield_color = '700'
             self.update_armor()
 
         def receive_damage(self,damage,attacker,wtype):
